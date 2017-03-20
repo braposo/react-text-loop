@@ -1,5 +1,6 @@
 import React from "react";
 import { TransitionMotion, spring } from "react-motion";
+import { updateInitialWidth, nextStep } from "../utils";
 
 class TextLoop extends React.PureComponent {
     constructor(props) {
@@ -21,11 +22,7 @@ class TextLoop extends React.PureComponent {
     }
 
     setDefaultWidth() {
-        this.setState((prevState, props) => {
-            return {
-                initialWidth: props.initialWidth || this.wordBox.getBoundingClientRect().width,
-            };
-        });
+        this.setState(updateInitialWidth(this.wordBox.getBoundingClientRect().width));
     }
 
     willLeave = () => {
@@ -43,11 +40,7 @@ class TextLoop extends React.PureComponent {
     }
 
     tick = () => {
-        this.setState((prevState, props) => {
-            return {
-                currentWord: (prevState.currentWord + 1) % props.options.length,
-            };
-        });
+        this.setState(nextStep);
     };
 
     getStyles = () => {
