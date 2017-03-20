@@ -8,6 +8,7 @@
     "clean": "rimraf dist/",
     "dev": "yarn run clean && babel src/ -d dist/ --watch --copy-files",
     "lint": "eslint src/ --ext .js,.jsx",
+    "prepublish": "yarn run clean && yarn run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
