@@ -1,3 +1,3 @@
-import TextCycle from "./components/TextCycle";
+import TextLoop from "./components/TextLoop";
 
-export { TextCycle };
+export default TextLoop;

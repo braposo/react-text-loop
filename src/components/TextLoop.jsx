@@ -1,7 +1,7 @@
 import React from "react";
 import { TransitionMotion, spring } from "react-motion";
 
-class TextCycle extends React.PureComponent {
+class TextLoop extends React.PureComponent {
     constructor(props) {
         super(props);
 
@@ -126,7 +126,7 @@ class TextCycle extends React.PureComponent {
     }
 }
 
-TextCycle.propTypes = {
+TextLoop.propTypes = {
     options: React.PropTypes.array.isRequired,
     speed: React.PropTypes.number.isRequired,
     adjustingSpeed: React.PropTypes.string.isRequired,
@@ -136,10 +136,10 @@ TextCycle.propTypes = {
     springConfig: React.PropTypes.object.isRequired,
 };
 
-TextCycle.defaultProps = {
+TextLoop.defaultProps = {
     speed: 3000,
     adjustingSpeed: "150ms",
     springConfig: { stiffness: 340, damping: 30 },
 };
 
-export default TextCycle;
+export default TextLoop;
