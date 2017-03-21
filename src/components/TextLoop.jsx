@@ -25,7 +25,7 @@ class TextLoop extends React.PureComponent {
         this.setState(updateInitialWidth(this.wordBox.getBoundingClientRect().width));
     }
 
-    willLeave = () => {
+    handleWillLeave = () => {
         return {
             opacity: spring(0, this.props.springConfig),
             translate: spring(-43, this.props.springConfig),
@@ -60,7 +60,7 @@ class TextLoop extends React.PureComponent {
                 style={this.getStyles()}
             >
                 <TransitionMotion
-                    willLeave={this.willLeave}
+                    willLeave={this.handleWillLeave}
                     willEnter={this.willEnter}
                     styles={[
                         {
