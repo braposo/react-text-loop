@@ -43,7 +43,15 @@ class TextLoop extends React.PureComponent {
         this.setState(nextStep);
     };
 
-    getStyles = () => {
+    getWidth() {
+        if (this.state.currentWord === 0) {
+            return this.state.initialWidth;
+        }
+
+        return this.wordBox.getBoundingClientRect().width;
+    }
+
+    getStyles() {
         return {
             ...this.props.style,
             display: "inline-block",
@@ -53,7 +61,7 @@ class TextLoop extends React.PureComponent {
         };
     };
 
-    getTransitionMotionStyles = () => {
+    getTransitionMotionStyles() {
         return [
             {
                 key: `step${this.state.currentWord}`,
@@ -81,14 +89,12 @@ class TextLoop extends React.PureComponent {
                 >
                     {
                         (interpolatedStyles) => {
-                            const width = this.state.currentWord === 0 ? this.state.initialWidth : this.wordBox.getBoundingClientRect().width;
-
                             return (
                                 <div
                                     style={{
                                         transition: `width ${this.props.adjustingSpeed} linear`,
                                         height,
-                                        width,
+                                        width: this.getWidth(),
                                     }}
                                 >
                                     {
