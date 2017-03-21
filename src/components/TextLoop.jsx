@@ -78,7 +78,7 @@ class TextLoop extends React.PureComponent {
                     translate: spring(0, this.props.springConfig),
                 },
             },
-        ]
+        ];
     }
 
     getTextStyles(config) {
