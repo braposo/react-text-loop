@@ -53,6 +53,21 @@ class TextLoop extends React.PureComponent {
         };
     };
 
+    getTransitionMotionStyles = () => {
+        return [
+            {
+                key: `step${this.state.currentWord}`,
+                data: {
+                    text: this.props.options[this.state.currentWord],
+                },
+                style: {
+                    opacity: spring(1, this.props.springConfig),
+                    translate: spring(0, this.props.springConfig),
+                },
+            },
+        ]
+    };
+
     render() {
         const { height } = this.props;
         return (
@@ -62,18 +77,7 @@ class TextLoop extends React.PureComponent {
                 <TransitionMotion
                     willLeave={this.handleWillLeave}
                     willEnter={this.handleWillEnter}
-                    styles={[
-                        {
-                            key: `step${this.state.currentWord}`,
-                            data: {
-                                text: this.props.options[this.state.currentWord],
-                            },
-                            style: {
-                                opacity: spring(1, this.props.springConfig),
-                                translate: spring(0, this.props.springConfig),
-                            },
-                        },
-                    ]}
+                    styles={this.getTransitionMotionStyles()}
                 >
                     {
                         (interpolatedStyles) => {
