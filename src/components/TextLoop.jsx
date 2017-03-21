@@ -32,7 +32,7 @@ class TextLoop extends React.PureComponent {
         };
     };
 
-    willEnter() {
+    handleWillEnter() {
         return {
             opacity: 0,
             translate: 43,
@@ -61,7 +61,7 @@ class TextLoop extends React.PureComponent {
             >
                 <TransitionMotion
                     willLeave={this.handleWillLeave}
-                    willEnter={this.willEnter}
+                    willEnter={this.handleWillEnter}
                     styles={[
                         {
                             key: `step${this.state.currentWord}`,
