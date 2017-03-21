@@ -40,7 +40,9 @@ class TextLoop extends React.PureComponent {
     }
 
     tick = () => {
-        this.setState(nextStep);
+        this.setState({
+            currentWord: (this.state.currentWord + 1) % this.props.options.length,
+        });
     };
 
     getWidth() {

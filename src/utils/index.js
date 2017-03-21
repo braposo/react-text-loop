@@ -3,9 +3,3 @@ export const updateInitialWidth = (autoWidth) => (state, props) => {
         initialWidth: props.initialWidth || autoWidth,
     };
 };
-
-export const nextStep = (state, props) => {
-    return {
-        currentWord: (state.currentWord + 1) % props.options.length,
-    };
-};
