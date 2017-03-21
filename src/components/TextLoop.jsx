@@ -21,7 +21,7 @@ class TextLoop extends React.PureComponent {
     }
 
     setDefaultWidth() {
-        const autoWidth = this.wordBox.getBoundingClientRect().width);
+        const autoWidth = this.wordBox.getBoundingClientRect().width;
 
         this.setState({
             initialWidth: this.props.initialWidth || autoWidth,
