@@ -64,7 +64,7 @@ class TextLoop extends React.PureComponent {
             verticalAlign: "top",
             height: this.props.height,
         };
-    };
+    }
 
     getTransitionMotionStyles() {
         return [
@@ -79,10 +79,22 @@ class TextLoop extends React.PureComponent {
                 },
             },
         ]
-    };
+    }
+
+    getTextStyles(config) {
+        return {
+            opacity: config.style.opacity,
+            transform: `translateY(${config.style.translate}px)`,
+            whiteSpace: "nowrap",
+            display: "inline-block",
+            position: "absolute",
+            left: 0,
+            top: 0,
+            lineHeight: `${this.props.height}px`,
+        };
+    }
 
     render() {
-        const { height } = this.props;
         return (
             <div
                 style={this.getStyles()}
@@ -98,7 +110,7 @@ class TextLoop extends React.PureComponent {
                                 <div
                                     style={{
                                         transition: `width ${this.props.adjustingSpeed} linear`,
-                                        height,
+                                        height: this.props.height,
                                         width: this.getWidth(),
                                     }}
                                 >
@@ -108,16 +120,7 @@ class TextLoop extends React.PureComponent {
                                                 <div
                                                     ref={(n) => { this.wordBox = n; }}
                                                     key={config.key}
-                                                    style={{
-                                                        opacity: config.style.opacity,
-                                                        transform: `translateY(${config.style.translate}px)`,
-                                                        whiteSpace: "nowrap",
-                                                        display: "inline-block",
-                                                        position: "absolute",
-                                                        left: 0,
-                                                        top: 0,
-                                                        lineHeight: `${height}px`,
-                                                    }}
+                                                    style={this.getTextStyles(config)}
                                                 >
                                                     {config.data.text}
                                                 </div>
