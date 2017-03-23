@@ -1,6 +1,5 @@
 import React from "react";
 import { TransitionMotion, spring } from "react-motion";
-import { updateInitialWidth, nextStep } from "../utils";
 
 class TextLoop extends React.PureComponent {
     constructor(props) {
@@ -22,17 +21,21 @@ class TextLoop extends React.PureComponent {
     }
 
     setDefaultWidth() {
-        this.setState(updateInitialWidth(this.wordBox.getBoundingClientRect().width));
+        const autoWidth = this.wordBox.getBoundingClientRect().width;
+
+        this.setState((state, props) => ({
+            initialWidth: props.initialWidth || autoWidth,
+        }));
     }
 
-    willLeave = () => {
+    handleWillLeave = () => {
         return {
             opacity: spring(0, this.props.springConfig),
             translate: spring(-43, this.props.springConfig),
         };
     };
 
-    willEnter() {
+    handleWillEnter() {
         return {
             opacity: 0,
             translate: 43,
@@ -40,10 +43,20 @@ class TextLoop extends React.PureComponent {
     }
 
     tick = () => {
-        this.setState(nextStep);
+        this.setState((state, props) => ({
+            currentWord: (state.currentWord + 1) % props.options.length,
+        }));
     };
 
-    getStyles = () => {
+    getWidth() {
+        if (this.state.currentWord === 0) {
+            return this.state.initialWidth;
+        }
+
+        return this.wordBox.getBoundingClientRect().width;
+    }
+
+    getStyles() {
         return {
             ...this.props.style,
             display: "inline-block",
@@ -51,40 +64,54 @@ class TextLoop extends React.PureComponent {
             verticalAlign: "top",
             height: this.props.height,
         };
-    };
+    }
+
+    getTransitionMotionStyles() {
+        return [
+            {
+                key: `step${this.state.currentWord}`,
+                data: {
+                    text: this.props.options[this.state.currentWord],
+                },
+                style: {
+                    opacity: spring(1, this.props.springConfig),
+                    translate: spring(0, this.props.springConfig),
+                },
+            },
+        ];
+    }
+
+    getTextStyles(config) {
+        return {
+            opacity: config.style.opacity,
+            transform: `translateY(${config.style.translate}px)`,
+            whiteSpace: "nowrap",
+            display: "inline-block",
+            position: "absolute",
+            left: 0,
+            top: 0,
+            lineHeight: `${this.props.height}px`,
+        };
+    }
 
     render() {
-        const { height } = this.props;
         return (
             <div
                 style={this.getStyles()}
             >
                 <TransitionMotion
-                    willLeave={this.willLeave}
-                    willEnter={this.willEnter}
-                    styles={[
-                        {
-                            key: `step${this.state.currentWord}`,
-                            data: {
-                                text: this.props.options[this.state.currentWord],
-                            },
-                            style: {
-                                opacity: spring(1, this.props.springConfig),
-                                translate: spring(0, this.props.springConfig),
-                            },
-                        },
-                    ]}
+                    willLeave={this.handleWillLeave}
+                    willEnter={this.handleWillEnter}
+                    styles={this.getTransitionMotionStyles()}
                 >
                     {
                         (interpolatedStyles) => {
-                            const width = this.state.currentWord === 0 ? this.state.initialWidth : this.wordBox.getBoundingClientRect().width;
-
                             return (
                                 <div
                                     style={{
                                         transition: `width ${this.props.adjustingSpeed} linear`,
-                                        height,
-                                        width,
+                                        height: this.props.height,
+                                        width: this.getWidth(),
                                     }}
                                 >
                                     {
@@ -93,16 +120,7 @@ class TextLoop extends React.PureComponent {
                                                 <div
                                                     ref={(n) => { this.wordBox = n; }}
                                                     key={config.key}
-                                                    style={{
-                                                        opacity: config.style.opacity,
-                                                        transform: `translateY(${config.style.translate}px)`,
-                                                        whiteSpace: "nowrap",
-                                                        display: "inline-block",
-                                                        position: "absolute",
-                                                        left: 0,
-                                                        top: 0,
-                                                        lineHeight: `${height}px`,
-                                                    }}
+                                                    style={this.getTextStyles(config)}
                                                 >
                                                     {config.data.text}
                                                 </div>
