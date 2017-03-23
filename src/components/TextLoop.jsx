@@ -23,9 +23,9 @@ class TextLoop extends React.PureComponent {
     setDefaultWidth() {
         const autoWidth = this.wordBox.getBoundingClientRect().width;
 
-        this.setState({
-            initialWidth: this.props.initialWidth || autoWidth,
-        });
+        this.setState((state, props) => ({
+            initialWidth: props.initialWidth || autoWidth,
+        }));
     }
 
     handleWillLeave = () => {
@@ -43,9 +43,9 @@ class TextLoop extends React.PureComponent {
     }
 
     tick = () => {
-        this.setState({
-            currentWord: (this.state.currentWord + 1) % this.props.options.length,
-        });
+        this.setState((state, props) => ({
+            currentWord: (state.currentWord + 1) % props.options.length,
+        }));
     };
 
     getWidth() {
