@@ -48,7 +48,7 @@ class TextLoop extends React.PureComponent {
     tick = () => {
         this.setState((state, props) => {
             return {
-                currentWord: (state.currentWord + 1) % props.options.length,
+                currentWord: (state.currentWord + 1) % React.Children.count(props.children),
             };
         });
     };
@@ -72,15 +72,19 @@ class TextLoop extends React.PureComponent {
     }
 
     getTransitionMotionStyles() {
+        const { children, springConfig } = this.props;
+        const { currentWord } = this.state;
+        const options = React.Children.toArray(children);
+
         return [
             {
-                key: `step${this.state.currentWord}`,
+                key: `step${currentWord}`,
                 data: {
-                    text: this.props.options[this.state.currentWord],
+                    text: options[currentWord],
                 },
                 style: {
-                    opacity: spring(1, this.props.springConfig),
-                    translate: spring(0, this.props.springConfig),
+                    opacity: spring(1, springConfig),
+                    translate: spring(0, springConfig),
                 },
             },
         ];
@@ -141,13 +145,13 @@ class TextLoop extends React.PureComponent {
 }
 
 TextLoop.propTypes = {
-    options: React.PropTypes.array.isRequired,
     speed: React.PropTypes.number.isRequired,
     adjustingSpeed: React.PropTypes.string.isRequired,
     initialWidth: React.PropTypes.number, // eslint-disable-line react/no-unused-prop-types
     height: React.PropTypes.number.isRequired,
     style: React.PropTypes.object,
     springConfig: React.PropTypes.object.isRequired,
+    children: React.PropTypes.node.isRequired,
 };
 
 TextLoop.defaultProps = {
