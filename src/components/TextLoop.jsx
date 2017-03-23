@@ -24,10 +24,9 @@ class TextLoop extends React.PureComponent {
     }
 
     willLeave = () => {
-        const { springConfig } = this.props;
         return {
-            opacity: spring(0, springConfig),
-            translate: spring(-this.getDimensions("height"), springConfig),
+            opacity: spring(0),
+            translate: spring(-this.getDimensions("height")),
         };
     };
 
