@@ -125,7 +125,7 @@ class TextLoop extends React.PureComponent {
                         (interpolatedStyles) => (
                             <div
                                 style={{
-                                    transition: `width ${this.props.adjustingSpeed} linear`,
+                                    transition: `width ${this.props.adjustingSpeed}ms linear`,
                                     height: this.getDimensions("height"),
                                     width: this.getDimensions("width"),
                                 }}
@@ -158,6 +158,7 @@ class TextLoop extends React.PureComponent {
 
 TextLoop.propTypes = {
     speed: React.PropTypes.number.isRequired,
+    adjustingSpeed: React.PropTypes.number.isRequired,
     initialWidth: React.PropTypes.number.isRequired,
     initialHeight: React.PropTypes.number.isRequired,
     style: React.PropTypes.object,
@@ -167,7 +168,7 @@ TextLoop.propTypes = {
 
 TextLoop.defaultProps = {
     speed: 3000,
-    adjustingSpeed: "150ms",
+    adjustingSpeed: 150,
     springConfig: { stiffness: 340, damping: 30 },
     initialWidth: 0,
     initialHeight: 0,
