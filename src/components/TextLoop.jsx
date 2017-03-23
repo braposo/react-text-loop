@@ -8,6 +8,7 @@ class TextLoop extends React.PureComponent {
 
         this.state = {
             currentWord: 0,
+            wordCount: 0,
             width: props.initialWidth,
             height: props.initialHeight,
         };
@@ -50,6 +51,7 @@ class TextLoop extends React.PureComponent {
         this.setState((state, props) => {
             return {
                 currentWord: (state.currentWord + 1) % React.Children.count(props.children),
+                wordCount: (state.wordCount + 1) % 1000, // just a safe value to avoid infinite counts
             };
         });
     };
@@ -86,12 +88,12 @@ class TextLoop extends React.PureComponent {
 
     getTransitionMotionStyles() {
         const { children, springConfig } = this.props;
-        const { currentWord } = this.state;
+        const { wordCount, currentWord } = this.state;
         const options = React.Children.toArray(children);
 
         return [
             {
-                key: `step${currentWord}`,
+                key: `step${wordCount}`,
                 data: {
                     text: options[currentWord],
                 },
