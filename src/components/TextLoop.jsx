@@ -104,6 +104,16 @@ class TextLoop extends React.PureComponent {
     }
 
     render() {
+        // Show first child while it's loading
+        if (this.state.initialWidth === 0) {
+            const children = React.Children.toArray(this.props.children)[0];
+            return (
+                <span ref={(n) => { this.wordBox = n; }}>
+                    {children}
+                </span>
+            );
+        }
+
         return (
             <div
                 style={this.getStyles()}
