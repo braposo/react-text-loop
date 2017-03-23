@@ -21,16 +21,17 @@ class TextLoop extends React.PureComponent {
     }
 
     willLeave = () => {
+        const { springConfig, height } = this.props;
         return {
-            opacity: spring(0, this.props.springConfig),
-            translate: spring(-43, this.props.springConfig),
+            opacity: spring(0, springConfig),
+            translate: spring(-height, springConfig),
         };
     };
 
-    willEnter() {
+    willEnter = () => {
         return {
             opacity: 0,
-            translate: 43,
+            translate: this.props.height,
         };
     }
 
