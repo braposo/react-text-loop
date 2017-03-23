@@ -51,6 +51,7 @@
     "react-dom": "^15.0.1"
   },
   "dependencies": {
+    "glamor": "^2.20.24",
     "react-motion": "^0.4.7"
   }
 }
