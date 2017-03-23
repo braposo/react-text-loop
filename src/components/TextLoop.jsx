@@ -40,8 +40,8 @@ class TextLoop extends React.PureComponent {
     setDefaultWidth() {
         this.setState(() => {
             return {
-                initialWidth: this.getDimensions("width"),
-                initialHeight: this.getDimensions("height"),
+                width: this.getDimensions("width"),
+                height: this.getDimensions("height"),
             };
         });
     }
