@@ -24,24 +24,30 @@ class TextLoop extends React.PureComponent {
     }
 
     willLeave = () => {
+        const { height } = this.getDimensions();
+
         return {
             opacity: spring(0),
-            translate: spring(-this.getDimensions("height")),
+            translate: spring(-height),
         };
     };
 
     willEnter = () => {
+        const { height } = this.getDimensions();
+
         return {
             opacity: 0,
-            translate: this.getDimensions("height"),
+            translate: height,
         };
     }
 
     setDefaultWidth() {
+        const { height, width } = this.getDimensions();
+
         this.setState(() => {
             return {
-                width: this.getDimensions("width"),
-                height: this.getDimensions("height"),
+                width,
+                height,
             };
         });
     }
@@ -55,22 +61,25 @@ class TextLoop extends React.PureComponent {
         });
     };
 
-    getDimensions(dimension = "width") {
+    getDimensions() {
         if (this.wordBox == null) {
-            return this.state[dimension];
+            return { height: this.state.height, width: this.state.width };
         }
 
-        return this.wordBox.getBoundingClientRect()[dimension];
+        const { width, height } = this.wordBox.getBoundingClientRect();
+
+        return { width, height };
     }
 
     getStyles() {
+        const { height } = this.getDimensions();
         return css(
             this.props.style,
             {
                 display: "inline-block",
                 position: "relative",
                 verticalAlign: "top",
-                height: this.getDimensions("height"),
+                height,
             },
         );
     }
@@ -123,33 +132,37 @@ class TextLoop extends React.PureComponent {
                     styles={this.getTransitionMotionStyles()}
                 >
                     {
-                        (interpolatedStyles) => (
-                            <div
-                                style={{
-                                    transition: `width ${this.props.adjustingSpeed}ms linear`,
-                                    height: this.getDimensions("height"),
-                                    width: this.getDimensions("width"),
-                                }}
-                            >
-                                {
-                                    interpolatedStyles.map(
-                                        (config) => (
-                                            <div
-                                                {...this.getTextStyles()}
-                                                ref={(n) => { this.wordBox = n; }}
-                                                key={config.key}
-                                                style={{
-                                                    opacity: config.style.opacity,
-                                                    transform: `translateY(${config.style.translate}px)`,
-                                                }}
-                                            >
-                                                {config.data.text}
-                                            </div>
+                        (interpolatedStyles) => {
+                            const { height, width } = this.getDimensions();
+
+                            return (
+                                <div
+                                    style={{
+                                        transition: `width ${this.props.adjustingSpeed}ms linear`,
+                                        height,
+                                        width,
+                                    }}
+                                >
+                                    {
+                                        interpolatedStyles.map(
+                                            (config) => (
+                                                <div
+                                                    {...this.getTextStyles()}
+                                                    ref={(n) => { this.wordBox = n; }}
+                                                    key={config.key}
+                                                    style={{
+                                                        opacity: config.style.opacity,
+                                                        transform: `translateY(${config.style.translate}px)`,
+                                                    }}
+                                                >
+                                                    {config.data.text}
+                                                </div>
+                                            )
                                         )
-                                    )
-                                }
-                            </div>
-                        )
+                                    }
+                                </div>
+                            );
+                        }
                     }
                 </TransitionMotion>
             </div>
