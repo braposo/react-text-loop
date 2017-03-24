@@ -20,32 +20,36 @@ class TextLoop extends React.PureComponent {
         clearInterval(this.tickInterval);
     }
 
-    setDefaultWidth() {
-        const autoWidth = this.wordBox.getBoundingClientRect().width;
-
-        this.setState((state, props) => ({
-            initialWidth: props.initialWidth || autoWidth,
-        }));
-    }
-
-    handleWillLeave = () => {
+    willLeave = () => {
         return {
             opacity: spring(0, this.props.springConfig),
             translate: spring(-43, this.props.springConfig),
         };
     };
 
-    handleWillEnter() {
+    willEnter() {
         return {
             opacity: 0,
             translate: 43,
         };
     }
 
+    setDefaultWidth() {
+        const autoWidth = this.wordBox.getBoundingClientRect().width;
+
+        this.setState((state, props) => {
+            return {
+                initialWidth: props.initialWidth || autoWidth,
+            };
+        });
+    }
+
     tick = () => {
-        this.setState((state, props) => ({
-            currentWord: (state.currentWord + 1) % props.options.length,
-        }));
+        this.setState((state, props) => {
+            return {
+                currentWord: (state.currentWord + 1) % props.options.length,
+            };
+        });
     };
 
     getWidth() {
@@ -100,36 +104,34 @@ class TextLoop extends React.PureComponent {
                 style={this.getStyles()}
             >
                 <TransitionMotion
-                    willLeave={this.handleWillLeave}
-                    willEnter={this.handleWillEnter}
+                    willLeave={this.willLeave}
+                    willEnter={this.willEnter}
                     styles={this.getTransitionMotionStyles()}
                 >
                     {
-                        (interpolatedStyles) => {
-                            return (
-                                <div
-                                    style={{
-                                        transition: `width ${this.props.adjustingSpeed} linear`,
-                                        height: this.props.height,
-                                        width: this.getWidth(),
-                                    }}
-                                >
-                                    {
-                                        interpolatedStyles.map(
-                                            (config) => (
-                                                <div
-                                                    ref={(n) => { this.wordBox = n; }}
-                                                    key={config.key}
-                                                    style={this.getTextStyles(config)}
-                                                >
-                                                    {config.data.text}
-                                                </div>
-                                            )
+                        (interpolatedStyles) => (
+                            <div
+                                style={{
+                                    transition: `width ${this.props.adjustingSpeed} linear`,
+                                    height: this.props.height,
+                                    width: this.getWidth(),
+                                }}
+                            >
+                                {
+                                    interpolatedStyles.map(
+                                        (config) => (
+                                            <div
+                                                ref={(n) => { this.wordBox = n; }}
+                                                key={config.key}
+                                                style={this.getTextStyles(config)}
+                                            >
+                                                {config.data.text}
+                                            </div>
                                         )
-                                    }
-                                </div>
-                            );
-                        }
+                                    )
+                                }
+                            </div>
+                        )
                     }
                 </TransitionMotion>
             </div>
