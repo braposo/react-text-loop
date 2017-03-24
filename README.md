@@ -13,8 +13,6 @@ An animated loop of text nodes for your headings. Uses [react-motion](https://gi
 
 ### Code
 
-Example:
-
 ```jsx
 import TextLoop from 'react-text-loop';
 
