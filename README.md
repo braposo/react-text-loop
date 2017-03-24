@@ -98,7 +98,7 @@ You can also just send a normal array as children prop if you don't need any ind
 
 ## Contributing
 
-Please follow our contributing guidelines.
+Please follow our [contributing guidelines](https://github.com/EDITD/react-text-loop/blob/master/CONTRIBUTING.md).
 
 ## License
 
