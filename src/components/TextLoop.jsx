@@ -63,12 +63,10 @@ class TextLoop extends React.PureComponent {
 
     getDimensions() {
         if (this.wordBox == null) {
-            return { height: this.state.height, width: this.state.width };
+            return this.state;
         }
 
-        const { width, height } = this.wordBox.getBoundingClientRect();
-
-        return { width, height };
+        return this.wordBox.getBoundingClientRect();
     }
 
     getStyles() {
