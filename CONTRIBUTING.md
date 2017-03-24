@@ -2,7 +2,7 @@
 
 We are open to, and grateful for, any contributions made by the community.
 
-## Reporting Issues and Asking Questions
+## Reporting Issues
 
 Before opening an issue, please search the [issue tracker](https://github.com/EDITD/react-text-loop/issues) to make sure your issue hasn't already been reported.
 
