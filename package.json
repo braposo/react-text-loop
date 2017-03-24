@@ -16,10 +16,13 @@
     "url": "git+https://github.com/EDITD/react-text-loop.git"
   },
   "keywords": [
+    "react",
+    "component",
     "text",
-    "animated",
+    "animation",
     "loop",
     "cycle",
+    "react",
     "motion"
   ],
   "author": {
