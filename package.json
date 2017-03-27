@@ -15,6 +15,10 @@
     "type": "git",
     "url": "git+https://github.com/EDITD/react-text-loop.git"
   },
+  "files": [
+    "dist",
+    "src"
+  ],
   "keywords": [
     "react",
     "component",
