@@ -1,6 +1,7 @@
 import React from "react";
 import { TransitionMotion, spring } from "react-motion";
 import { css } from "glamor";
+import PropTypes from "prop-types";
 
 const defaultDimension = "auto";
 
@@ -202,13 +203,13 @@ class TextLoop extends React.PureComponent {
 }
 
 TextLoop.propTypes = {
-    speed: React.PropTypes.number.isRequired,
-    adjustingSpeed: React.PropTypes.number.isRequired,
-    style: React.PropTypes.object,
-    springConfig: React.PropTypes.object.isRequired,
-    children: React.PropTypes.node.isRequired,
-    fade: React.PropTypes.bool.isRequired,
-    mask: React.PropTypes.bool.isRequired,
+    speed: PropTypes.number.isRequired,
+    adjustingSpeed: PropTypes.number.isRequired,
+    style: PropTypes.object,
+    springConfig: PropTypes.object.isRequired,
+    children: PropTypes.node.isRequired,
+    fade: PropTypes.bool.isRequired,
+    mask: PropTypes.bool.isRequired,
 };
 
 TextLoop.defaultProps = {
