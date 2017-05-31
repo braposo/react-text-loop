@@ -35,12 +35,12 @@ class App extends Component {
 
 | Prop | Type | Default | Definition |
 | --- | --- | --- | --- |
-| speed | number | `3000` | The speed that the words change (in ms) |
+| speed | number | `3000` | The speed that the words change (in ms). Set to 0 to stop animation. |
 | adjustingSpeed | number | `150` | The speed that the container around each word adjusts to the next one (in ms) |
-| initialWidth | number | `0` | If you want to manually adjust the initial width of the word container |
-| initialHeight | number | `0` | If you want to manually adjust the initial height of the word container |
+| fade | boolean | `true` | Enable or disable the fade animation on enter and leave |
+| mask | boolean | `false` | Mask the animation around the bounding box of the animated content |
 | springConfig | object | `{ stiffness: 340, damping: 30 }` | Configuration for [react-motion spring](https://github.com/chenglou/react-motion#--spring-val-number-config-springhelperconfig--opaqueconfig) |
-| style | object \|\| array |  | Any additional styles you might want to send to the wrapper. Uses glamor to process it so you can send either objects or arrays. |
+| style | object or array |  | Any additional styles you might want to send to the wrapper. Uses glamor to process it so you can send either objects or arrays. |
 | children | node | | The words you want to loop (required) |
 
 ### Caveats
