@@ -1,6 +1,9 @@
 import React from "react";
 import { TransitionMotion, spring } from "react-motion";
 import { css } from "glamor";
+import PropTypes from "prop-types";
+
+const defaultDimension = "auto";
 
 class TextLoop extends React.PureComponent {
     constructor(props) {
@@ -9,61 +12,81 @@ class TextLoop extends React.PureComponent {
         this.state = {
             currentWord: 0,
             wordCount: 0,
-            width: props.initialWidth,
-            height: props.initialHeight,
+            hasLoaded: false,
         };
     }
 
     componentDidMount() {
-        this.setDefaultWidth();
-        this.tickInterval = setInterval(this.tick, this.props.speed);
+        // Starts animation
+        const { speed } = this.props;
+        if (speed > 0) {
+            this.tick();
+            this.tickInterval = setInterval(this.tick, this.props.speed);
+        }
+    }
+
+    componentDidUpdate(prevProps) {
+        const { speed } = this.props;
+        if (prevProps.speed !== speed) {
+            clearInterval(this.tickInterval);
+            if (speed > 0) {
+                this.tickInterval = setInterval(this.tick, speed);
+            }
+        }
     }
 
     componentWillUnmount() {
-        clearInterval(this.tickInterval);
+        if (this.tickInterval != null) {
+            clearInterval(this.tickInterval);
+        }
     }
 
+    // Fade out animation
     willLeave = () => {
         const { height } = this.getDimensions();
 
         return {
-            opacity: spring(0),
-            translate: spring(-height),
+            opacity: spring(this.getOpacity(), this.props.springConfig),
+            translate: spring(-height, this.props.springConfig),
         };
     };
 
+    // Fade in animation
     willEnter = () => {
         const { height } = this.getDimensions();
 
         return {
-            opacity: 0,
+            opacity: this.getOpacity(),
             translate: height,
         };
-    }
-
-    setDefaultWidth() {
-        const { height, width } = this.getDimensions();
-
-        this.setState(() => {
-            return {
-                width,
-                height,
-            };
-        });
-    }
+    };
 
     tick = () => {
         this.setState((state, props) => {
+            if (!state.hasLoaded) {
+                return {
+                    hasLoaded: true,
+                };
+            }
+
             return {
-                currentWord: (state.currentWord + 1) % React.Children.count(props.children),
-                wordCount: (state.wordCount + 1) % 1000, // just a safe value to avoid infinite counts
+                currentWord: (state.currentWord + 1) %
+                    React.Children.count(props.children),
+                wordCount: (state.wordCount + 1) % 1000, // just a safe value to avoid infinite counts,
             };
         });
     };
 
+    getOpacity() {
+        return this.props.fade ? 0 : 1;
+    }
+
     getDimensions() {
         if (this.wordBox == null) {
-            return this.state;
+            return {
+                width: defaultDimension,
+                height: defaultDimension,
+            };
         }
 
         return this.wordBox.getBoundingClientRect();
@@ -71,24 +94,27 @@ class TextLoop extends React.PureComponent {
 
     getStyles() {
         const { height } = this.getDimensions();
+
         return css(
             this.props.style,
+            this.props.mask && { overflow: "hidden" },
             {
                 display: "inline-block",
                 position: "relative",
                 verticalAlign: "top",
                 height,
-            },
+            }
         );
     }
 
-    getTextStyles() {
+    getTextStyles(isStatic) {
+        const position = isStatic ? "relative" : "absolute";
         return css({
             whiteSpace: "nowrap",
             display: "inline-block",
-            position: "absolute",
             left: 0,
             top: 0,
+            position,
         });
     }
 
@@ -99,7 +125,7 @@ class TextLoop extends React.PureComponent {
 
         return [
             {
-                key: `step${wordCount}`,
+                key: `step-${wordCount}`,
                 data: {
                     text: options[currentWord],
                 },
@@ -111,79 +137,87 @@ class TextLoop extends React.PureComponent {
         ];
     }
 
-    render() {
-        // Show first child while it's loading
-        if (this.state.width === 0) {
-            const children = React.Children.toArray(this.props.children)[0];
-            return (
-                <span ref={(n) => { this.wordBox = n; }}>
-                    {children}
-                </span>
-            );
-        }
-
+    renderStatic() {
+        const children = React.Children.toArray(this.props.children)[0];
         return (
-            <div {...this.getStyles()}>
-                <TransitionMotion
-                    willLeave={this.willLeave}
-                    willEnter={this.willEnter}
-                    styles={this.getTransitionMotionStyles()}
-                >
-                    {
-                        (interpolatedStyles) => {
-                            const { height, width } = this.getDimensions();
+            <span
+                ref={(n) => {
+                    this.wordBox = n;
+                }}
+            >
+                {children}
+            </span>
+        );
+    }
 
-                            return (
+    renderAnimation() {
+        return (
+            <TransitionMotion
+                willLeave={this.willLeave}
+                willEnter={this.willEnter}
+                styles={this.getTransitionMotionStyles()}
+            >
+                {(interpolatedStyles) => {
+                    const { height, width } = this.getDimensions();
+                    return (
+                        <div
+                            style={{
+                                transition: `width ${this.props.adjustingSpeed}ms linear`,
+                                height,
+                                width,
+                            }}
+                        >
+                            {interpolatedStyles.map((config) => (
                                 <div
+                                    {...this.getTextStyles(
+                                        width === defaultDimension
+                                    )}
+                                    ref={(n) => {
+                                        this.wordBox = n;
+                                    }}
+                                    key={config.key}
                                     style={{
-                                        transition: `width ${this.props.adjustingSpeed}ms linear`,
-                                        height,
-                                        width,
+                                        opacity: config.style.opacity,
+                                        transform: `translateY(${config.style.translate}px)`,
                                     }}
                                 >
-                                    {
-                                        interpolatedStyles.map(
-                                            (config) => (
-                                                <div
-                                                    {...this.getTextStyles()}
-                                                    ref={(n) => { this.wordBox = n; }}
-                                                    key={config.key}
-                                                    style={{
-                                                        opacity: config.style.opacity,
-                                                        transform: `translateY(${config.style.translate}px)`,
-                                                    }}
-                                                >
-                                                    {config.data.text}
-                                                </div>
-                                            )
-                                        )
-                                    }
+                                    {config.data.text}
                                 </div>
-                            );
-                        }
-                    }
-                </TransitionMotion>
+                            ))}
+                        </div>
+                    );
+                }}
+            </TransitionMotion>
+        );
+    }
+
+    render() {
+        return (
+            <div {...this.getStyles()}>
+                {!this.state.hasLoaded ?
+                    this.renderStatic() :
+                    this.renderAnimation()}
             </div>
         );
     }
 }
 
 TextLoop.propTypes = {
-    speed: React.PropTypes.number.isRequired,
-    adjustingSpeed: React.PropTypes.number.isRequired,
-    initialWidth: React.PropTypes.number.isRequired,
-    initialHeight: React.PropTypes.number.isRequired,
-    style: React.PropTypes.object,
-    springConfig: React.PropTypes.object.isRequired,
-    children: React.PropTypes.node.isRequired,
+    speed: PropTypes.number.isRequired,
+    adjustingSpeed: PropTypes.number.isRequired,
+    style: PropTypes.object,
+    springConfig: PropTypes.object.isRequired,
+    children: PropTypes.node.isRequired,
+    fade: PropTypes.bool.isRequired,
+    mask: PropTypes.bool.isRequired,
 };
 
 TextLoop.defaultProps = {
     speed: 3000,
     adjustingSpeed: 150,
     springConfig: { stiffness: 340, damping: 30 },
-    initialWidth: 0,
-    initialHeight: 0,
+    fade: true,
+    mask: false,
 };
 
 export default TextLoop;
