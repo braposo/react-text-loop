@@ -1,7 +1,18 @@
 {
     "presets": [
-        "es2015",
-        "stage-0",
+        [
+            "env",
+            {
+                "loose": true,
+                "modules": false
+            }
+        ],
         "react"
-    ]
+    ],
+    "plugins": ["transform-object-rest-spread", "transform-class-properties"],
+    "env": {
+        "commonjs": {
+            "plugins": ["transform-es2015-modules-commonjs"]
+        }
+    }
 }

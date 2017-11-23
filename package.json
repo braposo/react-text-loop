@@ -1,65 +1,77 @@
 {
-  "name": "react-text-loop",
-  "version": "1.1.0",
-  "description": "Create an animated loop of a list of text for your headings",
-  "main": "./dist/index.js",
-  "scripts": {
-    "build": "babel src/ -d dist/ --copy-files",
-    "clean": "rimraf dist/",
-    "dev": "yarn run clean && babel src/ -d dist/ --watch --copy-files",
-    "lint": "eslint src/ --ext .js,.jsx",
-    "prepublish": "yarn run clean && yarn run build",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/EDITD/react-text-loop.git"
-  },
-  "files": [
-    "dist",
-    "src"
-  ],
-  "keywords": [
-    "react",
-    "component",
-    "text",
-    "animation",
-    "loop",
-    "cycle",
-    "react",
-    "motion"
-  ],
-  "author": {
-    "name": "EDITED",
-    "email": "hello@edited.com",
-    "url": "http://edited.tech"
-  },
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/EDITD/react-text-loop/issues"
-  },
-  "homepage": "https://github.com/EDITD/react-text-loop#readme",
-  "devDependencies": {
-    "babel-cli": "^6.11.4",
-    "babel-core": "^6.11.4",
-    "babel-eslint": "^7.1.1",
-    "babel-preset-es2015": "^6.24.0",
-    "babel-preset-react": "^6.23.0",
-    "babel-preset-stage-0": "^6.22.0",
-    "eslint": "^3.1.1",
-    "eslint-config-edited": "^1.0.0",
-    "eslint-plugin-import": "^2.2.0",
-    "eslint-plugin-react": "^6.10.2",
-    "react": "^15.4.2",
-    "rimraf": "^2.4.3"
-  },
-  "peerDependencies": {
-    "react": "^15.0.1",
-    "react-dom": "^15.0.1"
-  },
-  "dependencies": {
-    "glamor": "^2.20.25",
-    "prop-types": "^15.5.10",
-    "react-motion": "^0.5.0"
-  }
+    "name": "react-text-loop",
+    "version": "1.1.0",
+    "description": "Create an animated loop of a list of text for your headings",
+    "main": "./lib/index.js",
+    "module": "es/index.js",
+    "scripts": {
+        "build": "yarn run build:commonjs && yarn run build:es && npm run build:umd && npm run build:umd:min",
+        "build:es": "babel src -d es",
+        "build:commonjs": "cross-env BABEL_ENV=commonjs babel src -d lib",
+        "build:umd": "cross-env BABEL_ENV=commonjs NODE_ENV=development webpack src/index.js dist/react-text-loop.js",
+        "build:umd:min": "cross-env BABEL_ENV=commonjs NODE_ENV=production webpack src/index.js dist/react-text-loop.min.js",
+        "clean": "rimraf lib dist es",
+        "dev": "yarn run clean && cross-env BABEL_ENV=commonjs babel src -d lib --watch",
+        "lint": "eslint src/ --ext .js,.jsx",
+        "prepublish": "yarn run clean && yarn run build",
+        "test": "echo \"No tests available\" && exit 0"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/EDITD/react-text-loop.git"
+    },
+    "files": [
+        "es",
+        "dist",
+        "lib",
+        "src"
+    ],
+    "keywords": [
+        "react",
+        "component",
+        "text",
+        "animation",
+        "loop",
+        "cycle",
+        "react",
+        "motion"
+    ],
+    "author": {
+        "name": "EDITED",
+        "email": "hello@edited.com",
+        "url": "http://edited.tech"
+    },
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/EDITD/react-text-loop/issues"
+    },
+    "homepage": "https://github.com/EDITD/react-text-loop#readme",
+    "devDependencies": {
+        "babel-cli": "^6.11.4",
+        "babel-core": "^6.11.4",
+        "babel-eslint": "^7.1.1",
+        "babel-loader": "^7.1.2",
+        "babel-plugin-transform-class-properties": "^6.24.1",
+        "babel-plugin-transform-es2015-modules-commonjs": "^6.26.0",
+        "babel-plugin-transform-object-rest-spread": "^6.26.0",
+        "babel-preset-env": "^1.6.1",
+        "babel-preset-react": "^6.23.0",
+        "cross-env": "^5.1.1",
+        "eslint": "^3.1.1",
+        "eslint-config-edited": "^1.0.0",
+        "eslint-plugin-import": "^2.2.0",
+        "eslint-plugin-react": "^6.10.2",
+        "react": "^15.4.2",
+        "rimraf": "^2.4.3",
+        "webpack": "^3.8.1"
+    },
+    "peerDependencies": {
+        "react": "^15.0.1",
+        "react-dom": "^15.0.1"
+    },
+    "dependencies": {
+        "glamor": "^2.20.25",
+        "prop-types": "^15.5.10",
+        "react-motion": "^0.5.0"
+    }
 }
