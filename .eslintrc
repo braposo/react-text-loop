@@ -3,11 +3,17 @@
     "settings": {
         "import/resolver": {
             "node": {
-                "extensions": [ ".js", ".jsx" ],
+                "extensions": [
+                    ".js",
+                    ".jsx"
+                ]
             }
         }
     },
     "rules": {
-        "react/prefer-es6-class": [2, "always"],
+        "react/prefer-es6-class": [
+            2,
+            "always"
+        ]
     }
 }
