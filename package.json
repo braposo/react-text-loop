@@ -15,6 +15,8 @@
             "cross-env BABEL_ENV=commonjs NODE_ENV=production webpack src/index.js dist/react-text-loop.min.js",
         "clean": "rimraf lib dist es",
         "dev": "yarn run clean && cross-env BABEL_ENV=commonjs babel src -d lib --watch",
+        "dev:server":
+            "cross-env NODE_ENV=dev-server webpack-dev-server examples --config webpack.config.js --content-base examples --inline --hot",
         "lint": "eslint src/ --ext .js,.jsx",
         "prepublishOnly": "yarn run clean && yarn run build",
         "test": "echo \"No tests available\" && exit 0"
@@ -54,6 +56,7 @@
         "react-dom": "^15.0.1",
         "rimraf": "^2.4.3",
         "webpack": "^3.8.1",
+        "webpack-dev-server": "^2.9.4"
     },
     "peerDependencies": {
         "react": "^15.0.1"
