@@ -47,6 +47,20 @@ var config = {
     ],
 };
 
+// Special config for dev server
+if (env === "dev-server") {
+    config.externals = {};
+
+    config.entry = {
+        main: path.join(__dirname, "examples/index.js"),
+    };
+
+    config.output = {
+        publicPath: "/",
+        filename: "bundle.js",
+    };
+}
+
 if (env === "production") {
     config.plugins.push(
         new webpack.optimize.UglifyJsPlugin({
