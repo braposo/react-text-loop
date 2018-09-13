@@ -18,19 +18,19 @@ class TextLoop extends React.PureComponent {
 
     componentDidMount() {
         // Starts animation
-        const { speed } = this.props;
-        if (speed > 0) {
+        const { interval } = this.props;
+        if (interval > 0) {
             this.tick();
-            this.tickInterval = setInterval(this.tick, this.props.speed);
+            this.tickInterval = setInterval(this.tick, interval);
         }
     }
 
     componentDidUpdate(prevProps) {
-        const { speed } = this.props;
-        if (prevProps.speed !== speed) {
+        const { interval } = this.props;
+        if (prevProps.interval !== interval) {
             clearInterval(this.tickInterval);
-            if (speed > 0) {
-                this.tickInterval = setInterval(this.tick, speed);
+            if (interval > 0) {
+                this.tickInterval = setInterval(this.tick, interval);
             }
         }
     }
@@ -70,8 +70,7 @@ class TextLoop extends React.PureComponent {
             }
 
             return {
-                currentWord: (state.currentWord + 1) %
-                    React.Children.count(props.children),
+                currentWord: (state.currentWord + 1) % React.Children.count(props.children),
                 wordCount: (state.wordCount + 1) % 1000, // just a safe value to avoid infinite counts,
             };
         });
@@ -95,16 +94,12 @@ class TextLoop extends React.PureComponent {
     getStyles() {
         const { height } = this.getDimensions();
 
-        return css(
-            this.props.style,
-            this.props.mask && { overflow: "hidden" },
-            {
-                display: "inline-block",
-                position: "relative",
-                verticalAlign: "top",
-                height,
-            }
-        );
+        return css(this.props.style, this.props.mask && { overflow: "hidden" }, {
+            display: "inline-block",
+            position: "relative",
+            verticalAlign: "top",
+            height,
+        });
     }
 
     getTextStyles(isStatic) {
@@ -141,7 +136,7 @@ class TextLoop extends React.PureComponent {
         const children = React.Children.toArray(this.props.children)[0];
         return (
             <span
-                ref={(n) => {
+                ref={n => {
                     this.wordBox = n;
                 }}
             >
@@ -157,7 +152,7 @@ class TextLoop extends React.PureComponent {
                 willEnter={this.willEnter}
                 styles={this.getTransitionMotionStyles()}
             >
-                {(interpolatedStyles) => {
+                {interpolatedStyles => {
                     const { height, width } = this.getDimensions();
                     return (
                         <div
@@ -167,12 +162,10 @@ class TextLoop extends React.PureComponent {
                                 width,
                             }}
                         >
-                            {interpolatedStyles.map((config) => (
+                            {interpolatedStyles.map(config => (
                                 <div
-                                    {...this.getTextStyles(
-                                        width === defaultDimension
-                                    )}
-                                    ref={(n) => {
+                                    {...this.getTextStyles(width === defaultDimension)}
+                                    ref={n => {
                                         this.wordBox = n;
                                     }}
                                     key={config.key}
@@ -194,16 +187,14 @@ class TextLoop extends React.PureComponent {
     render() {
         return (
             <div {...this.getStyles()}>
-                {!this.state.hasLoaded ?
-                    this.renderStatic() :
-                    this.renderAnimation()}
+                {!this.state.hasLoaded ? this.renderStatic() : this.renderAnimation()}
             </div>
         );
     }
 }
 
 TextLoop.propTypes = {
-    speed: PropTypes.number.isRequired,
+    interval: PropTypes.number.isRequired,
     adjustingSpeed: PropTypes.number.isRequired,
     style: PropTypes.object,
     springConfig: PropTypes.object.isRequired,
@@ -213,7 +204,7 @@ TextLoop.propTypes = {
 };
 
 TextLoop.defaultProps = {
-    speed: 3000,
+    interval: 3000,
     adjustingSpeed: 150,
     springConfig: { stiffness: 340, damping: 30 },
     fade: true,
