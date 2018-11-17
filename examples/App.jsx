@@ -1,10 +1,10 @@
 import React from "react";
 import TextLoop from "../src";
-import { css } from "glamor";
+import cxs from "cxs";
 
 class App extends React.PureComponent {
     render() {
-        const styles = css({
+        const styles = cxs({
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
