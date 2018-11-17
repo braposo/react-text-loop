@@ -1,5 +1,5 @@
 import React from "react";
-import TextLoop from "../lib";
+import TextLoop from "../src";
 import { css } from "glamor";
 
 class App extends React.PureComponent {
