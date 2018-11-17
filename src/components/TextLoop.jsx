@@ -1,6 +1,6 @@
 import React from "react";
 import { TransitionMotion, spring } from "react-motion";
-import { css } from "glamor";
+import cxs from "cxs";
 import PropTypes from "prop-types";
 
 const defaultDimension = "auto";
@@ -70,7 +70,9 @@ class TextLoop extends React.PureComponent {
             }
 
             return {
-                currentWord: (state.currentWord + 1) % React.Children.count(props.children),
+                currentWord:
+                    (state.currentWord + 1) %
+                    React.Children.count(props.children),
                 wordCount: (state.wordCount + 1) % 1000, // just a safe value to avoid infinite counts,
             };
         });
@@ -94,17 +96,21 @@ class TextLoop extends React.PureComponent {
     getStyles() {
         const { height } = this.getDimensions();
 
-        return css(this.props.style, this.props.mask && { overflow: "hidden" }, {
-            display: "inline-block",
-            position: "relative",
-            verticalAlign: "top",
-            height,
-        });
+        return cxs(
+            this.props.style,
+            this.props.mask && { overflow: "hidden" },
+            {
+                display: "inline-block",
+                position: "relative",
+                verticalAlign: "top",
+                height,
+            }
+        );
     }
 
     getTextStyles(isStatic) {
         const position = isStatic ? "relative" : "absolute";
-        return css({
+        return cxs({
             whiteSpace: "nowrap",
             display: "inline-block",
             left: 0,
@@ -136,7 +142,7 @@ class TextLoop extends React.PureComponent {
         const children = React.Children.toArray(this.props.children)[0];
         return (
             <span
-                ref={n => {
+                ref={(n) => {
                     this.wordBox = n;
                 }}
             >
@@ -152,26 +158,32 @@ class TextLoop extends React.PureComponent {
                 willEnter={this.willEnter}
                 styles={this.getTransitionMotionStyles()}
             >
-                {interpolatedStyles => {
+                {(interpolatedStyles) => {
                     const { height, width } = this.getDimensions();
                     return (
                         <div
                             style={{
-                                transition: `width ${this.props.adjustingSpeed}ms linear`,
+                                transition: `width ${
+                                    this.props.adjustingSpeed
+                                }ms linear`,
                                 height,
                                 width,
                             }}
                         >
-                            {interpolatedStyles.map(config => (
+                            {interpolatedStyles.map((config) => (
                                 <div
-                                    {...this.getTextStyles(width === defaultDimension)}
-                                    ref={n => {
+                                    className={this.getTextStyles(
+                                        width === defaultDimension
+                                    )}
+                                    ref={(n) => {
                                         this.wordBox = n;
                                     }}
                                     key={config.key}
                                     style={{
                                         opacity: config.style.opacity,
-                                        transform: `translateY(${config.style.translate}px)`,
+                                        transform: `translateY(${
+                                            config.style.translate
+                                        }px)`,
                                     }}
                                 >
                                     {config.data.text}
@@ -186,8 +198,10 @@ class TextLoop extends React.PureComponent {
 
     render() {
         return (
-            <div {...this.getStyles()}>
-                {!this.state.hasLoaded ? this.renderStatic() : this.renderAnimation()}
+            <div className={this.getStyles()}>
+                {!this.state.hasLoaded ?
+                    this.renderStatic() :
+                    this.renderAnimation()}
             </div>
         );
     }
