@@ -15,6 +15,7 @@
         }
     },
     "rules": {
-        "react/prefer-es6-class": [2, "always"]
+        "react/prefer-es6-class": [2, "always"],
+        "arrow-parens": [2, "as-needed"]
     }
 }

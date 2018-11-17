@@ -199,9 +199,9 @@ class TextLoop extends React.PureComponent {
     render() {
         return (
             <div className={this.getStyles()}>
-                {!this.state.hasLoaded
-                    ? this.renderStatic()
-                    : this.renderAnimation()}
+                {!this.state.hasLoaded ?
+                    this.renderStatic() :
+                    this.renderAnimation()}
             </div>
         );
     }
