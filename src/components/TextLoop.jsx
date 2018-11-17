@@ -96,16 +96,16 @@ class TextLoop extends React.PureComponent {
     getStyles() {
         const { height } = this.getDimensions();
 
-        return cxs(
-            this.props.style,
-            this.props.mask && { overflow: "hidden" },
-            {
+        return cxs({
+            ...this.props.style,
+            ...(this.props.mask && { overflow: "hidden" }),
+            ...{
                 display: "inline-block",
                 position: "relative",
                 verticalAlign: "top",
                 height,
-            }
-        );
+            },
+        });
     }
 
     getTextStyles(isStatic) {
@@ -142,7 +142,7 @@ class TextLoop extends React.PureComponent {
         const children = React.Children.toArray(this.props.children)[0];
         return (
             <span
-                ref={(n) => {
+                ref={n => {
                     this.wordBox = n;
                 }}
             >
@@ -158,7 +158,7 @@ class TextLoop extends React.PureComponent {
                 willEnter={this.willEnter}
                 styles={this.getTransitionMotionStyles()}
             >
-                {(interpolatedStyles) => {
+                {interpolatedStyles => {
                     const { height, width } = this.getDimensions();
                     return (
                         <div
@@ -170,12 +170,12 @@ class TextLoop extends React.PureComponent {
                                 width,
                             }}
                         >
-                            {interpolatedStyles.map((config) => (
+                            {interpolatedStyles.map(config => (
                                 <div
                                     className={this.getTextStyles(
                                         width === defaultDimension
                                     )}
-                                    ref={(n) => {
+                                    ref={n => {
                                         this.wordBox = n;
                                     }}
                                     key={config.key}
@@ -199,9 +199,9 @@ class TextLoop extends React.PureComponent {
     render() {
         return (
             <div className={this.getStyles()}>
-                {!this.state.hasLoaded ?
-                    this.renderStatic() :
-                    this.renderAnimation()}
+                {!this.state.hasLoaded
+                    ? this.renderStatic()
+                    : this.renderAnimation()}
             </div>
         );
     }
