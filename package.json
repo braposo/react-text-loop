@@ -5,18 +5,14 @@
     "main": "./lib/index.js",
     "module": "es/index.js",
     "scripts": {
-        "build":
-            "yarn run build:commonjs && yarn run build:es && npm run build:umd && npm run build:umd:min",
+        "build": "yarn run build:commonjs && yarn run build:es && npm run build:umd && npm run build:umd:min",
         "build:es": "babel src -d es",
         "build:commonjs": "cross-env BABEL_ENV=commonjs babel src -d lib",
-        "build:umd":
-            "cross-env BABEL_ENV=commonjs NODE_ENV=development webpack src/index.js dist/react-text-loop.js",
-        "build:umd:min":
-            "cross-env BABEL_ENV=commonjs NODE_ENV=production webpack src/index.js dist/react-text-loop.min.js",
+        "build:umd": "cross-env BABEL_ENV=commonjs NODE_ENV=development webpack src/index.js -o dist/react-text-loop.js",
+        "build:umd:min": "cross-env BABEL_ENV=commonjs NODE_ENV=production webpack src/index.js -o dist/react-text-loop.min.js",
         "clean": "rimraf lib dist es",
         "dev": "yarn run clean && cross-env BABEL_ENV=commonjs babel src -d lib --watch",
-        "dev:server":
-            "cross-env NODE_ENV=dev-server webpack-dev-server examples --config webpack.config.js --content-base examples --inline --hot",
+        "dev:server": "cross-env NODE_ENV=dev-server webpack-dev-server examples --config webpack.config.js --content-base examples --inline --hot",
         "lint": "eslint src/ --ext .js,.jsx",
         "prepublishOnly": "yarn run clean && yarn run build",
         "test": "echo \"No tests available\" && exit 0"
@@ -25,8 +21,22 @@
         "type": "git",
         "url": "git+https://github.com/EDITD/react-text-loop.git"
     },
-    "files": ["es", "dist", "lib", "src"],
-    "keywords": ["react", "component", "text", "animation", "loop", "cycle", "react", "motion"],
+    "files": [
+        "es",
+        "dist",
+        "lib",
+        "src"
+    ],
+    "keywords": [
+        "react",
+        "component",
+        "text",
+        "animation",
+        "loop",
+        "cycle",
+        "react",
+        "motion"
+    ],
     "author": {
         "name": "EDITED",
         "email": "hello@edited.com",
@@ -38,31 +48,32 @@
     },
     "homepage": "https://github.com/EDITD/react-text-loop#readme",
     "devDependencies": {
-        "babel-cli": "^6.11.4",
-        "babel-core": "^6.11.4",
-        "babel-eslint": "^7.1.1",
-        "babel-loader": "^7.1.2",
-        "babel-plugin-transform-class-properties": "^6.24.1",
-        "babel-plugin-transform-es2015-modules-commonjs": "^6.26.0",
-        "babel-plugin-transform-object-rest-spread": "^6.26.0",
-        "babel-preset-env": "^1.6.1",
-        "babel-preset-react": "^6.23.0",
-        "cross-env": "^5.1.1",
-        "eslint": "^3.1.1",
-        "eslint-config-edited": "^1.0.0",
-        "eslint-plugin-import": "^2.2.0",
-        "eslint-plugin-react": "^6.10.2",
-        "react": "^15.4.2",
-        "react-dom": "^15.0.1",
-        "rimraf": "^2.4.3",
-        "webpack": "^3.8.1",
-        "webpack-dev-server": "^2.9.4"
+        "@babel/cli": "^7.1.5",
+        "@babel/core": "^7.1.6",
+        "@babel/plugin-proposal-class-properties": "^7.1.0",
+        "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
+        "@babel/plugin-transform-modules-commonjs": "^7.1.0",
+        "@babel/preset-env": "^7.1.6",
+        "@babel/preset-react": "^7.0.0",
+        "babel-eslint": "^10.0.1",
+        "babel-loader": "^8.0.4",
+        "cross-env": "^5.2.0",
+        "eslint": "^5.9.0",
+        "eslint-config-edited": "^1.0.1",
+        "eslint-plugin-import": "^2.14.0",
+        "eslint-plugin-react": "^7.11.1",
+        "react": "^16.6.3",
+        "react-dom": "^16.6.3",
+        "rimraf": "^2.6.2",
+        "webpack": "^4.25.1",
+        "webpack-cli": "^3.1.2"
     },
     "peerDependencies": {
-        "react": "^15.0.1"
+        "react": "^15.0.1",
+        "react-dom": "^15.0.1"
     },
     "dependencies": {
-        "glamor": "^2.20.25",
+        "cxs": "^6.2.0",
         "prop-types": "^15.5.10",
         "react-motion": "^0.5.0"
     }

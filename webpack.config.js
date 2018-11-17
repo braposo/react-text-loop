@@ -1,32 +1,33 @@
 /* eslint-env node */
-var webpack = require("webpack");
-var path = require("path");
-var env = process.env.NODE_ENV;
+/* eslint import/no-commonjs: 0, import/no-nodejs-modules: 0 */
+const webpack = require("webpack");
+const path = require("path");
 
-var reactExternal = {
+const reactExternal = {
     root: "React",
     commonjs2: "react",
     commonjs: "react",
     amd: "React",
 };
 
-var reactDomExternal = {
+const reactDomExternal = {
     commonjs: "react-dom",
     commonjs2: "react-dom",
     amd: "ReactDOM",
     root: "ReactDOM",
 };
 
-var config = {
+const config = {
+    mode: process.env.NODE_ENV || "development",
     externals: {
         react: reactExternal,
         "react-dom": reactDomExternal,
     },
     module: {
-        loaders: [
+        rules: [
             {
                 test: /\.jsx?$/,
-                loaders: ["babel-loader"],
+                use: ["babel-loader"],
                 exclude: /node_modules/,
             },
         ],
@@ -39,41 +40,7 @@ var config = {
         library: "ReactTextLoop",
         libraryTarget: "umd",
     },
-    plugins: [
-        new webpack.optimize.OccurrenceOrderPlugin(),
-        new webpack.DefinePlugin({
-            "process.env.NODE_ENV": JSON.stringify(env),
-        }),
-    ],
+    plugins: [new webpack.optimize.OccurrenceOrderPlugin()],
 };
-
-// Special config for dev server
-if (env === "dev-server") {
-    config.externals = {};
-
-    config.entry = {
-        main: path.join(__dirname, "examples/index.js"),
-    };
-
-    config.output = {
-        publicPath: "/",
-        filename: "bundle.js",
-    };
-}
-
-if (env === "production") {
-    config.plugins.push(
-        new webpack.optimize.UglifyJsPlugin({
-            compressor: {
-                pure_getters: true,
-                unsafe: true,
-                unsafe_comps: true,
-                screw_ie8: true,
-                warnings: false,
-            },
-        }),
-        new webpack.optimize.ModuleConcatenationPlugin()
-    );
-}
 
 module.exports = config;
