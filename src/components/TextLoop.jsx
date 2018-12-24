@@ -172,8 +172,9 @@ class TextLoop extends React.PureComponent {
     }
 
     render() {
+        const { className = "" } = this.props;
         return (
-            <div className={`${this.wrapperStyles} ${this.props.className}`}>
+            <div className={`${this.wrapperStyles} ${className}`}>
                 <TransitionMotion
                     willLeave={this.willLeave}
                     willEnter={this.willEnter}
@@ -241,7 +242,7 @@ TextLoop.defaultProps = {
     springConfig: { stiffness: 340, damping: 30 },
     fade: true,
     mask: false,
-    noWrap: false,
+    noWrap: true,
 };
 
 export default TextLoop;
