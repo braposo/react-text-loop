@@ -1,12 +1,30 @@
 import React from "react";
 import TextLoop from "../src";
-import cxs from "cxs";
+import cxs from "cxs/component";
+
+const Example = cxs("div")({
+    fontSize: "24px",
+});
+
+const Title = cxs("div")({
+    marginBottom: "5px",
+    fontSize: "10px",
+    fontWeight: 600,
+    textTransform: "uppercase",
+    color: "#aaa",
+});
+
+const Section = cxs("div")({
+    marginBottom: "50px",
+    fontFamily:
+        '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif',
+});
 
 class App extends React.PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            options: ["One", "Two"],
+            options: ["Trade faster", "Increase sales"],
             interval: 0,
         };
     }
@@ -14,7 +32,12 @@ class App extends React.PureComponent {
     componentDidMount() {
         setTimeout(() => {
             this.setState({
-                options: ["One", "Two", "Three"],
+                options: [
+                    "Trade faster",
+                    "Increase sales",
+                    "Stock winners",
+                    "Price perfectly",
+                ],
             });
             console.log("change options");
         }, 10000);
@@ -39,46 +62,71 @@ class App extends React.PureComponent {
 
         return (
             <div>
-                <div>
-                    <h2 style={{ width: 500, textAlign: "left" }}>
-                        Cool sentence,{" "}
-                        <TextLoop interval={0}>
-                            <span>one</span>
-                            <span>two</span>
-                            <span>three</span>
-                        </TextLoop>
-                    </h2>
-                </div>
-                <div>
-                    <h2 style={{ width: 500, textAlign: "left" }}>
-                        Cool sentence,{" "}
-                        <TextLoop interval={3000} children={options} />
-                    </h2>
-                </div>
-                <div>
-                    <h2 style={{ width: 200 }}>
-                        <TextLoop interval={3000} mask={true} noWrap={true}>
-                            <span>Cool sentence, one</span>
-                            <span>Cool sentence, two</span>
-                            <span>Cool sentence, three</span>
-                        </TextLoop>
-                    </h2>
-                </div>
-                <div>
-                    <h2 style={{ width: 500, textAlign: "left" }}>
-                        Cool sentence,{" "}
-                        <TextLoop
-                            interval={3000}
-                            onChange={state => console.log(state)}
-                        >
-                            <span>one</span>
-                            <span>two</span>
-                            <span>three</span>
-                        </TextLoop>
-                    </h2>
-                </div>
-                <div>
-                    <h2>
+                <Section>
+                    <Title>Default</Title>
+                    <Example>
+                        <TextLoop>
+                            <span>Trade faster</span>
+                            <span>Increase sales</span>
+                            <span>Stock winners</span>
+                        </TextLoop>{" "}
+                        in every category.
+                    </Example>
+                </Section>
+                <Section>
+                    <Title>Fast transition</Title>
+                    <Example>
+                        <TextLoop interval={1000}>
+                            <span>Trade faster</span>
+                            <span>Increase sales</span>
+                            <span>Stock winners</span>
+                        </TextLoop>{" "}
+                        in every category.
+                    </Example>
+                </Section>
+                <Section>
+                    <Title>Woobly transition</Title>
+                    <Example>
+                        <TextLoop springConfig={{ stiffness: 180, damping: 8 }}>
+                            <span>Trade faster</span>
+                            <span>Increase sales</span>
+                            <span>Stock winners</span>
+                        </TextLoop>{" "}
+                        in every category.
+                    </Example>
+                </Section>
+                <Section>
+                    <Title>Variable interval</Title>
+                    <Example>
+                        <TextLoop interval={[3000, 1000]}>
+                            <span>Trade faster</span>
+                            <span>Increase sales</span>
+                            <span>Stock winners</span>
+                        </TextLoop>{" "}
+                        in every category.
+                    </Example>
+                </Section>
+                <Section>
+                    <Title>Masked</Title>
+                    <Example>
+                        <TextLoop mask={true}>
+                            <span>Trade faster</span>
+                            <span>Increase sales</span>
+                            <span>Stock winners</span>
+                        </TextLoop>{" "}
+                        in every category.
+                    </Example>
+                </Section>
+                <Section>
+                    <Title>Controlled props</Title>
+                    <Example>
+                        <TextLoop interval={interval} children={options} /> in
+                        every category.
+                    </Example>
+                </Section>
+                <Section>
+                    <Title>Staggered (with delay prop)</Title>
+                    <Example>
                         <TextLoop
                             mask={true}
                             interval={2000}
@@ -121,12 +169,8 @@ class App extends React.PureComponent {
                             delay={300}
                             children={["l", "t"]}
                         />
-                    </h2>
-                </div>
-                <h2>
-                    <TextLoop interval={interval} children={options} /> and
-                    something else.
-                </h2>
+                    </Example>
+                </Section>
             </div>
         );
     }
