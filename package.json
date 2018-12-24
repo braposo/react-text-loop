@@ -12,7 +12,7 @@
         "build:umd:min": "cross-env BABEL_ENV=commonjs NODE_ENV=production webpack src/index.js -o dist/react-text-loop.min.js",
         "clean": "rimraf lib dist es",
         "dev": "yarn run clean && cross-env BABEL_ENV=commonjs babel src -d lib --watch",
-        "dev:server": "cross-env NODE_ENV=dev-server webpack-dev-server examples --config webpack.config.js --content-base examples --inline --hot",
+        "dev:server": "webpack-dev-server ",
         "lint": "eslint src/ --ext .js,.jsx",
         "prepublishOnly": "yarn run clean && yarn run build",
         "test": "echo \"No tests available\" && exit 0"
@@ -48,24 +48,24 @@
     },
     "homepage": "https://github.com/EDITD/react-text-loop#readme",
     "devDependencies": {
-        "@babel/cli": "^7.1.5",
-        "@babel/core": "^7.1.6",
-        "@babel/plugin-proposal-class-properties": "^7.1.0",
-        "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
-        "@babel/plugin-transform-modules-commonjs": "^7.1.0",
-        "@babel/preset-env": "^7.1.6",
+        "@babel/cli": "^7.2.3",
+        "@babel/core": "^7.2.2",
+        "@babel/plugin-proposal-class-properties": "^7.2.3",
+        "@babel/plugin-proposal-object-rest-spread": "^7.2.0",
+        "@babel/plugin-transform-modules-commonjs": "^7.2.0",
+        "@babel/preset-env": "^7.2.3",
         "@babel/preset-react": "^7.0.0",
         "babel-eslint": "^10.0.1",
         "babel-loader": "^8.0.4",
         "cross-env": "^5.2.0",
-        "eslint": "^5.9.0",
+        "eslint": "^5.11.0",
         "eslint-config-edited": "^1.0.1",
         "eslint-plugin-import": "^2.14.0",
         "eslint-plugin-react": "^7.11.1",
-        "react": "^16.6.3",
-        "react-dom": "^16.6.3",
+        "react": "^16.7.0",
+        "react-dom": "^16.7.0",
         "rimraf": "^2.6.2",
-        "webpack": "^4.25.1",
+        "webpack": "^4.28.2",
         "webpack-cli": "^3.1.2"
     },
     "peerDependencies": {
@@ -74,7 +74,7 @@
     },
     "dependencies": {
         "cxs": "^6.2.0",
-        "prop-types": "^15.5.10",
-        "react-motion": "^0.5.0"
+        "prop-types": "^15.6.2",
+        "react-motion": "^0.5.2"
     }
 }
