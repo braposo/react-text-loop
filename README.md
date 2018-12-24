@@ -6,13 +6,21 @@ An animated loop of text nodes for your headings. Uses
 [react-motion](https://github.com/chenglou/react-motion) for the transition so it handles super fast
 animations and spring params.
 
+[![npm version][version-badge]][npm]
+[![npm downloads][downloads-badge]][npm]
+[![gzip size][size-badge]][size]
+[![MIT License][license-badge]][license]
+[![PRs Welcome][prs-badge]][prs]
+
 ---
 
 ## Installation
 
-`npm install react-text-loop` || `yarn add react-text-loop`
+`npm install react-text-loop` or `yarn add react-text-loop`
 
 ## How to use
+
+[![Edit react-text-loop][codesandbox-badge]][codesandbox]
 
 ### Code
 
@@ -39,12 +47,14 @@ class App extends Component {
 
 | Prop           | Type            | Default                           | Definition                                                                                                                                    |
 | -------------- | --------------- | --------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
-| interval       | number          | `3000`                            | The frequency (in ms) that the words change.                                                                                                  |
-| adjustingSpeed | number          | `150`                             | The speed that the container around each word adjusts to the next one (in ms)                                                                 |
+| interval       | number \| array | `3000`                            | The frequency (in ms) that the words change. Can also pass an array if you want a different interval per children |
+| delay       | number | `3000`                            | A delay (in ms) for the animation to start. This allows to use multiple instances to create a staggered animation effect for example. |
+| adjustingSpeed | number          | `150`                             | The speed that the container around each word adjusts to the next one (in ms). Usually you don't need to change this.                                                                 |
 | fade           | boolean         | `true`                            | Enable or disable the fade animation on enter and leave                                                                                       |
 | mask           | boolean         | `false`                           | Mask the animation around the bounding box of the animated content                                                                            |
+| noWrap           | boolean         | `true`                           | Disable `whitepace: nowrap` style for each element. This is used by default so we can always get the right width of the element but can have issues sometimes. |
 | springConfig   | object          | `{ stiffness: 340, damping: 30 }` | Configuration for [react-motion spring](https://github.com/chenglou/react-motion#--spring-val-number-config-springhelperconfig--opaqueconfig) |
-| style          | object or array |                                   | Any additional styles you might want to send to the wrapper. Uses glamor to process it so you can send either objects or arrays.              |
+| className | string | | Any additional CSS classes you might want to use to style the image |
 | children       | node            |                                   | The words you want to loop (required)                                                                                                         |
 
 ### Caveats
@@ -78,7 +88,7 @@ each node.
 ![text-loop-fast-small](https://cloud.githubusercontent.com/assets/38172/24275301/5d48c6e2-1026-11e7-85b8-e7cfe07f4714.gif)
 
 ```jsx
-<TextLoop speed={100}>...</TextLoop>;
+<TextLoop interval={100}>...</TextLoop>;
 ```
 
 ### Wobbly animation
@@ -97,3 +107,16 @@ Please follow our
 ## License
 
 [MIT](https://github.com/EDITD/react-text-loop/blob/master/LICENSE)
+
+[npm]: https://www.npmjs.com/package/react-text-loop
+[license]: https://github.com/braposo/react-text-loop/blob/master/LICENSE
+[prs]: http://makeapullrequest.com
+[size]: https://unpkg.com/react-text-loop/dist/react-text-loop.min.js
+[version-badge]: https://img.shields.io/npm/v/react-text-loop.svg?style=flat-square
+[downloads-badge]: https://img.shields.io/npm/dm/react-text-loop.svg?style=flat-square
+[license-badge]: https://img.shields.io/npm/l/react-text-loop.svg?style=flat-square
+[size-badge]: http://img.badgesize.io/https://unpkg.com/react-text-loop/dist/react-text-loop.min.js?compression=gzip&style=flat-square
+[modules-badge]: https://img.shields.io/badge/module%20formats-umd%2C%20cjs%2C%20esm-green.svg?style=flat-square
+[prs-badge]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square
+[codesandbox-badge]: https://codesandbox.io/static/img/play-codesandbox.svg
+[codesandbox]: https://codesandbox.io/s/github/braposo/react-text-loop/
