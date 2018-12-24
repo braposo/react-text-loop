@@ -31,17 +31,29 @@ class TextLoop extends React.PureComponent {
         }
     }
 
-    componentDidUpdate(prevProps) {
-        const { interval, delay } = this.props;
+    componentDidUpdate(prevProps, prevState) {
+        const { interval, children, delay } = this.props;
+        const { currentWordIndex } = this.state;
 
-        if (prevProps.interval !== interval) {
-            clearTimeout(this.tickLoop);
+        const currentInterval = Array.isArray(interval)
+            ? interval[currentWordIndex % interval.length]
+            : interval;
+
+        if (prevState.currentInterval !== currentInterval) {
             clearTimeout(this.tickDelay);
-            if (interval > 0) {
+            clearTimeout(this.tickLoop);
+
+            if (currentInterval > 0) {
                 this.tickDelay = setTimeout(() => {
-                    this.tickLoop = setTimeout(this.tick, interval);
+                    this.tickLoop = setTimeout(this.tick, currentInterval);
                 }, delay);
             }
+        }
+
+        if (prevProps.children !== children) {
+            this.setState({
+                elements: React.Children.toArray(children),
+            });
         }
     }
 
@@ -76,26 +88,38 @@ class TextLoop extends React.PureComponent {
     };
 
     tick = () => {
-        this.setState((state, props) => {
-            const currentWordIndex =
-                (state.currentWordIndex + 1) % state.elements.length;
-            const currentEl = state.elements[currentWordIndex];
-            const updatedState = {
-                currentWordIndex,
-                currentEl,
-                wordCount: (state.wordCount + 1) % 1000, // just a safe value to avoid infinite counts,
-                currentInterval: Array.isArray(props.interval)
-                    ? props.interval[currentWordIndex % props.interval.length]
-                    : props.interval,
-            };
-            if (props.onChange) {
-                props.onChange(updatedState);
+        this.setState(
+            (state, props) => {
+                const currentWordIndex =
+                    (state.currentWordIndex + 1) % state.elements.length;
+
+                const currentEl = state.elements[currentWordIndex];
+                const updatedState = {
+                    currentWordIndex,
+                    currentEl,
+                    wordCount: (state.wordCount + 1) % 1000, // just a safe value to avoid infinite counts,
+                    currentInterval: Array.isArray(props.interval)
+                        ? props.interval[
+                              currentWordIndex % props.interval.length
+                          ]
+                        : props.interval,
+                };
+                if (props.onChange) {
+                    props.onChange(updatedState);
+                }
+
+                return updatedState;
+            },
+            () => {
+                if (this.state.currentInterval > 0) {
+                    clearTimeout(this.tickLoop);
+                    this.tickLoop = setTimeout(
+                        this.tick,
+                        this.state.currentInterval
+                    );
+                }
             }
-
-            return updatedState;
-        });
-
-        this.tickLoop = setTimeout(this.tick, this.state.currentInterval);
+        );
     };
 
     getOpacity() {
