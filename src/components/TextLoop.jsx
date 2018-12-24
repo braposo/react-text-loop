@@ -22,9 +22,9 @@ class TextLoop extends React.PureComponent {
     componentDidMount() {
         // Starts animation
         const { delay } = this.props;
-        const { currentInterval } = this.state;
+        const { currentInterval, elements } = this.state;
 
-        if (currentInterval > 0) {
+        if (currentInterval > 0 && elements.length > 1) {
             this.tickDelay = setTimeout(() => {
                 this.tickLoop = setTimeout(this.tick, currentInterval);
             }, delay);
@@ -43,7 +43,7 @@ class TextLoop extends React.PureComponent {
             clearTimeout(this.tickDelay);
             clearTimeout(this.tickLoop);
 
-            if (currentInterval > 0) {
+            if (currentInterval > 0 && React.Children.count(children) > 1) {
                 this.tickDelay = setTimeout(() => {
                     this.tickLoop = setTimeout(this.tick, currentInterval);
                 }, delay);
