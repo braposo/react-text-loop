@@ -32,10 +32,23 @@ class App extends React.PureComponent {
                 </div>
                 <div className={styles}>
                     <h2 style={{ width: 200 }}>
-                        <TextLoop interval={3000}>
+                        <TextLoop interval={3000} mask={true}>
                             <span>Cool sentence, one</span>
                             <span>Cool sentence, two</span>
                             <span>Cool sentence, three</span>
+                        </TextLoop>
+                    </h2>
+                </div>
+                <div className={styles}>
+                    <h2 style={{ width: 500, textAlign: "left" }}>
+                        Cool sentence,{" "}
+                        <TextLoop
+                            interval={3000}
+                            onChange={state => console.log(state)}
+                        >
+                            <span speed={200}>one</span>
+                            <span>two</span>
+                            <span>three</span>
                         </TextLoop>
                     </h2>
                 </div>

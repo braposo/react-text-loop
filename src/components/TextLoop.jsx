@@ -10,9 +10,9 @@ class TextLoop extends React.PureComponent {
         super(props);
 
         this.state = {
-            currentWord: 0,
+            currentWordIndex: 0,
             wordCount: 0,
-            hasLoaded: false,
+            element: React.Children.toArray(props.children)[0],
         };
     }
 
@@ -20,7 +20,6 @@ class TextLoop extends React.PureComponent {
         // Starts animation
         const { interval } = this.props;
         if (interval > 0) {
-            this.tick();
             this.tickInterval = setInterval(this.tick, interval);
         }
     }
@@ -63,18 +62,21 @@ class TextLoop extends React.PureComponent {
 
     tick = () => {
         this.setState((state, props) => {
-            if (!state.hasLoaded) {
-                return {
-                    hasLoaded: true,
-                };
+            const options = React.Children.toArray(props.children);
+            const currentWordIndex =
+                (state.currentWordIndex + 1) %
+                React.Children.count(props.children);
+
+            const updatedState = {
+                currentWordIndex,
+                wordCount: (state.wordCount + 1) % 1000, // just a safe value to avoid infinite counts,
+                element: options[currentWordIndex],
+            };
+            if (props.onChange) {
+                props.onChange(updatedState);
             }
 
-            return {
-                currentWord:
-                    (state.currentWord + 1) %
-                    React.Children.count(props.children),
-                wordCount: (state.wordCount + 1) % 1000, // just a safe value to avoid infinite counts,
-            };
+            return updatedState;
         });
     };
 
@@ -123,14 +125,14 @@ class TextLoop extends React.PureComponent {
 
     getTransitionMotionStyles() {
         const { children, springConfig } = this.props;
-        const { wordCount, currentWord } = this.state;
-        const options = React.Children.toArray(children);
+        const { wordCount, currentWordIndex, element } = this.state;
+        //const options = React.Children.toArray(children);
 
         return [
             {
                 key: `step-${wordCount}`,
                 data: {
-                    text: options[currentWord],
+                    element,
                 },
                 style: {
                     opacity: spring(1, springConfig),
@@ -140,71 +142,50 @@ class TextLoop extends React.PureComponent {
         ];
     }
 
-    renderStatic() {
-        const children = React.Children.toArray(this.props.children)[0];
-        return (
-            <span
-                ref={n => {
-                    this.wordBox = n;
-                }}
-            >
-                {children}
-            </span>
-        );
-    }
-
-    renderAnimation() {
-        return (
-            <TransitionMotion
-                willLeave={this.willLeave}
-                willEnter={this.willEnter}
-                styles={this.getTransitionMotionStyles()}
-            >
-                {interpolatedStyles => {
-                    const { height, width } = this.getDimensions();
-                    return (
-                        <div
-                            style={{
-                                transition: `width ${
-                                    this.props.adjustingSpeed
-                                }ms linear`,
-                                height,
-                                width,
-                            }}
-                        >
-                            {interpolatedStyles.map(config => (
-                                <div
-                                    className={this.getTextStyles(
-                                        width === defaultDimension,
-                                        this.props.noWrap
-                                    )}
-                                    ref={n => {
-                                        this.wordBox = n;
-                                    }}
-                                    key={config.key}
-                                    style={{
-                                        opacity: config.style.opacity,
-                                        transform: `translateY(${
-                                            config.style.translate
-                                        }px)`,
-                                    }}
-                                >
-                                    {config.data.text}
-                                </div>
-                            ))}
-                        </div>
-                    );
-                }}
-            </TransitionMotion>
-        );
-    }
-
     render() {
         return (
             <div className={this.getStyles()}>
-                {!this.state.hasLoaded
-                    ? this.renderStatic()
-                    : this.renderAnimation()}
+                <TransitionMotion
+                    willLeave={this.willLeave}
+                    willEnter={this.willEnter}
+                    styles={this.getTransitionMotionStyles()}
+                >
+                    {interpolatedStyles => {
+                        const { height, width } = this.getDimensions();
+                        return (
+                            <div
+                                style={{
+                                    transition: `width ${
+                                        this.props.adjustingSpeed
+                                    }ms linear`,
+                                    height,
+                                    width,
+                                }}
+                            >
+                                {interpolatedStyles.map(config => (
+                                    <div
+                                        className={this.getTextStyles(
+                                            width === defaultDimension,
+                                            this.props.noWrap
+                                        )}
+                                        ref={n => {
+                                            this.wordBox = n;
+                                        }}
+                                        key={config.key}
+                                        style={{
+                                            opacity: config.style.opacity,
+                                            transform: `translateY(${
+                                                config.style.translate
+                                            }px)`,
+                                        }}
+                                    >
+                                        {config.data.element}
+                                    </div>
+                                ))}
+                            </div>
+                        );
+                    }}
+                </TransitionMotion>
             </div>
         );
     }
