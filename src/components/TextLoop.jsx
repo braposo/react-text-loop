@@ -18,18 +18,23 @@ class TextLoop extends React.PureComponent {
 
     componentDidMount() {
         // Starts animation
-        const { interval } = this.props;
+        const { interval, delay } = this.props;
         if (interval > 0) {
-            this.tickInterval = setInterval(this.tick, interval);
+            this.tickDelay = setTimeout(() => {
+                this.tickInterval = setInterval(this.tick, interval);
+            }, delay);
         }
     }
 
     componentDidUpdate(prevProps) {
-        const { interval } = this.props;
+        const { interval, delay } = this.props;
         if (prevProps.interval !== interval) {
             clearInterval(this.tickInterval);
+            clearTimeout(this.tickDelay);
             if (interval > 0) {
-                this.tickInterval = setInterval(this.tick, interval);
+                this.tickDelay = setTimeout(() => {
+                    this.tickInterval = setInterval(this.tick, interval);
+                }, delay);
             }
         }
     }
@@ -37,6 +42,10 @@ class TextLoop extends React.PureComponent {
     componentWillUnmount() {
         if (this.tickInterval != null) {
             clearInterval(this.tickInterval);
+        }
+
+        if (this.tickDelay != null) {
+            clearTimeout(this.tickDelay);
         }
     }
 
@@ -179,6 +188,7 @@ class TextLoop extends React.PureComponent {
 
 TextLoop.propTypes = {
     interval: PropTypes.number.isRequired,
+    delay: PropTypes.number.isRequired,
     adjustingSpeed: PropTypes.number.isRequired,
     springConfig: PropTypes.object.isRequired,
     children: PropTypes.node.isRequired,
@@ -190,6 +200,7 @@ TextLoop.propTypes = {
 
 TextLoop.defaultProps = {
     interval: 3000,
+    delay: 0,
     adjustingSpeed: 150,
     springConfig: { stiffness: 340, damping: 30 },
     fade: true,
