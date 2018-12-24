@@ -13,8 +13,8 @@ class App extends React.PureComponent {
                 <div className={styles}>
                     <h2 style={{ width: 500, textAlign: "left" }}>
                         Cool sentence,{" "}
-                        <TextLoop interval={3000}>
-                            <span speed={200}>one</span>
+                        <TextLoop interval={0}>
+                            <span>one</span>
                             <span>two</span>
                             <span>three</span>
                         </TextLoop>
