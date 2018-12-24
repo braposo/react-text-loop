@@ -108,14 +108,16 @@ class TextLoop extends React.PureComponent {
         });
     }
 
-    getTextStyles(isStatic) {
+    getTextStyles(isStatic, noWrap) {
         const position = isStatic ? "relative" : "absolute";
+        const whiteSpace = noWrap ? "nowrap" : "normal";
+
         return cxs({
-            whiteSpace: "nowrap",
             display: "inline-block",
             left: 0,
             top: 0,
             position,
+            whiteSpace,
         });
     }
 
@@ -173,7 +175,8 @@ class TextLoop extends React.PureComponent {
                             {interpolatedStyles.map(config => (
                                 <div
                                     className={this.getTextStyles(
-                                        width === defaultDimension
+                                        width === defaultDimension,
+                                        this.props.noWrap
                                     )}
                                     ref={n => {
                                         this.wordBox = n;
@@ -199,9 +202,9 @@ class TextLoop extends React.PureComponent {
     render() {
         return (
             <div className={this.getStyles()}>
-                {!this.state.hasLoaded ?
-                    this.renderStatic() :
-                    this.renderAnimation()}
+                {!this.state.hasLoaded
+                    ? this.renderStatic()
+                    : this.renderAnimation()}
             </div>
         );
     }
@@ -215,6 +218,7 @@ TextLoop.propTypes = {
     children: PropTypes.node.isRequired,
     fade: PropTypes.bool.isRequired,
     mask: PropTypes.bool.isRequired,
+    noWrap: PropTypes.bool.isRequired,
 };
 
 TextLoop.defaultProps = {
@@ -223,6 +227,7 @@ TextLoop.defaultProps = {
     springConfig: { stiffness: 340, damping: 30 },
     fade: true,
     mask: false,
+    noWrap: false,
 };
 
 export default TextLoop;
