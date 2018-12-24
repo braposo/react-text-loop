@@ -52,6 +52,52 @@ class App extends React.PureComponent {
                         </TextLoop>
                     </h2>
                 </div>
+                <div className={styles}>
+                    <h2>
+                        <TextLoop
+                            mask={true}
+                            speed={2000}
+                            delay={0}
+                            children={["d", "p"]}
+                        />
+                        <TextLoop
+                            mask={true}
+                            speed={2000}
+                            delay={50}
+                            children={["i", "r"]}
+                        />
+                        <TextLoop
+                            mask={true}
+                            speed={2000}
+                            delay={100}
+                            children={["g", "o"]}
+                        />
+                        <TextLoop
+                            mask={true}
+                            speed={2000}
+                            delay={150}
+                            children={["i", "d"]}
+                        />
+                        <TextLoop
+                            mask={true}
+                            speed={2000}
+                            delay={200}
+                            children={["t", "u"]}
+                        />
+                        <TextLoop
+                            mask={true}
+                            speed={2000}
+                            delay={250}
+                            children={["a", "c"]}
+                        />
+                        <TextLoop
+                            mask={true}
+                            speed={2000}
+                            delay={300}
+                            children={["l", "t"]}
+                        />
+                    </h2>
+                </div>
             </div>
         );
     }
