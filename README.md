@@ -48,7 +48,7 @@ class App extends Component {
 | Prop           | Type            | Default                           | Definition                                                                                                                                    |
 | -------------- | --------------- | --------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
 | interval       | number \| array | `3000`                            | The frequency (in ms) that the words change. Can also pass an array if you want a different interval per children |
-| delay       | number | `3000`                            | A delay (in ms) for the animation to start. This allows to use multiple instances to create a staggered animation effect for example. |
+| delay       | number | `0`                            | A delay (in ms) for the animation to start. This allows to use multiple instances to create a staggered animation effect for example. |
 | adjustingSpeed | number          | `150`                             | The speed that the container around each word adjusts to the next one (in ms). Usually you don't need to change this.                                                                 |
 | fade           | boolean         | `true`                            | Enable or disable the fade animation on enter and leave                                                                                       |
 | mask           | boolean         | `false`                           | Mask the animation around the bounding box of the animated content                                                                            |
