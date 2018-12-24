@@ -76,7 +76,7 @@ class App extends React.PureComponent {
                 <Section>
                     <Title>Fast transition</Title>
                     <Example>
-                        <TextLoop interval={1000}>
+                        <TextLoop interval={100}>
                             <span>Trade faster</span>
                             <span>Increase sales</span>
                             <span>Stock winners</span>
