@@ -6,11 +6,13 @@ import PropTypes from "prop-types";
 class TextLoop extends React.PureComponent {
     constructor(props) {
         super(props);
+        const elements = React.Children.toArray(props.children);
 
         this.state = {
             currentWordIndex: 0,
             wordCount: 0,
-            element: React.Children.toArray(props.children)[0],
+            currentEl: elements[0],
+            elements,
         };
     }
 
@@ -60,15 +62,13 @@ class TextLoop extends React.PureComponent {
 
     tick = () => {
         this.setState((state, props) => {
-            const options = React.Children.toArray(props.children);
             const currentWordIndex =
-                (state.currentWordIndex + 1) %
-                React.Children.count(props.children);
+                (state.currentWordIndex + 1) % state.elements.length;
 
             const updatedState = {
                 currentWordIndex,
                 wordCount: (state.wordCount + 1) % 1000, // just a safe value to avoid infinite counts,
-                element: options[currentWordIndex],
+                currentEl: state.elements[currentWordIndex],
             };
             if (props.onChange) {
                 props.onChange(updatedState);
@@ -111,13 +111,13 @@ class TextLoop extends React.PureComponent {
 
     getTransitionMotionStyles() {
         const { springConfig } = this.props;
-        const { wordCount, element } = this.state;
+        const { wordCount, currentEl } = this.state;
 
         return [
             {
                 key: `step-${wordCount}`,
                 data: {
-                    element,
+                    currentEl,
                 },
                 style: {
                     opacity: spring(1, springConfig),
@@ -160,12 +160,12 @@ class TextLoop extends React.PureComponent {
                                                 config.style.translate
                                             }px)`,
                                             position:
-                                                this.wordBox == null ?
-                                                    "relative" :
-                                                    "absolute",
+                                                this.wordBox == null
+                                                    ? "relative"
+                                                    : "absolute",
                                         }}
                                     >
-                                        {config.data.element}
+                                        {config.data.currentEl}
                                     </div>
                                 ))}
                             </div>
