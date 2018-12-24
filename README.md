@@ -99,6 +99,8 @@ each node.
 <TextLoop springConfig={{ stiffness: 180, damping: 8 }}>...</TextLoop>;
 ```
 
+For many other examples, please have a look at the [CodeSandbox playground][codesandbox].
+
 ## Contributing
 
 Please follow our
