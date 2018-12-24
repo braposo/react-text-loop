@@ -3,8 +3,6 @@ import { TransitionMotion, spring } from "react-motion";
 import cxs from "cxs";
 import PropTypes from "prop-types";
 
-const defaultDimension = "auto";
-
 class TextLoop extends React.PureComponent {
     constructor(props) {
         super(props);
@@ -15,6 +13,22 @@ class TextLoop extends React.PureComponent {
             element: React.Children.toArray(props.children)[0],
         };
     }
+
+    wrapperStyles = cxs({
+        ...(this.props.mask && { overflow: "hidden" }),
+        ...{
+            display: "inline-block",
+            position: "relative",
+            verticalAlign: "top",
+        },
+    });
+
+    elementStyles = cxs({
+        display: "inline-block",
+        left: 0,
+        top: 0,
+        whiteSpace: this.props.noWrap ? "nowrap" : "normal",
+    });
 
     componentDidMount() {
         // Starts animation
@@ -87,40 +101,12 @@ class TextLoop extends React.PureComponent {
     getDimensions() {
         if (this.wordBox == null) {
             return {
-                width: defaultDimension,
-                height: defaultDimension,
+                width: "auto",
+                height: "auto",
             };
         }
 
         return this.wordBox.getBoundingClientRect();
-    }
-
-    getStyles() {
-        const { height } = this.getDimensions();
-
-        return cxs({
-            ...this.props.style,
-            ...(this.props.mask && { overflow: "hidden" }),
-            ...{
-                display: "inline-block",
-                position: "relative",
-                verticalAlign: "top",
-                height,
-            },
-        });
-    }
-
-    getTextStyles(isStatic, noWrap) {
-        const position = isStatic ? "relative" : "absolute";
-        const whiteSpace = noWrap ? "nowrap" : "normal";
-
-        return cxs({
-            display: "inline-block",
-            left: 0,
-            top: 0,
-            position,
-            whiteSpace,
-        });
     }
 
     getTransitionMotionStyles() {
@@ -142,8 +128,9 @@ class TextLoop extends React.PureComponent {
     }
 
     render() {
+        const hasLoaded = this.wordBox != null;
         return (
-            <div className={this.getStyles()}>
+            <div className={`${this.wrapperStyles} ${this.props.className}`}>
                 <TransitionMotion
                     willLeave={this.willLeave}
                     willEnter={this.willEnter}
@@ -163,10 +150,7 @@ class TextLoop extends React.PureComponent {
                             >
                                 {interpolatedStyles.map(config => (
                                     <div
-                                        className={this.getTextStyles(
-                                            width === defaultDimension,
-                                            this.props.noWrap
-                                        )}
+                                        className={this.elementStyles}
                                         ref={n => {
                                             this.wordBox = n;
                                         }}
@@ -176,6 +160,10 @@ class TextLoop extends React.PureComponent {
                                             transform: `translateY(${
                                                 config.style.translate
                                             }px)`,
+                                            position:
+                                                this.wordBox == null
+                                                    ? "relative"
+                                                    : "absolute",
                                         }}
                                     >
                                         {config.data.element}
@@ -193,7 +181,6 @@ class TextLoop extends React.PureComponent {
 TextLoop.propTypes = {
     interval: PropTypes.number.isRequired,
     adjustingSpeed: PropTypes.number.isRequired,
-    style: PropTypes.object,
     springConfig: PropTypes.object.isRequired,
     children: PropTypes.node.isRequired,
     fade: PropTypes.bool.isRequired,

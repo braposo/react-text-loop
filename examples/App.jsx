@@ -32,7 +32,7 @@ class App extends React.PureComponent {
                 </div>
                 <div className={styles}>
                     <h2 style={{ width: 200 }}>
-                        <TextLoop interval={3000} mask={true}>
+                        <TextLoop interval={3000} mask={true} noWrap={true}>
                             <span>Cool sentence, one</span>
                             <span>Cool sentence, two</span>
                             <span>Cool sentence, three</span>
