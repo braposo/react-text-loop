@@ -124,9 +124,8 @@ class TextLoop extends React.PureComponent {
     }
 
     getTransitionMotionStyles() {
-        const { children, springConfig } = this.props;
-        const { wordCount, currentWordIndex, element } = this.state;
-        //const options = React.Children.toArray(children);
+        const { springConfig } = this.props;
+        const { wordCount, element } = this.state;
 
         return [
             {
