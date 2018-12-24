@@ -14,22 +14,6 @@ class TextLoop extends React.PureComponent {
         };
     }
 
-    wrapperStyles = cxs({
-        ...(this.props.mask && { overflow: "hidden" }),
-        ...{
-            display: "inline-block",
-            position: "relative",
-            verticalAlign: "top",
-        },
-    });
-
-    elementStyles = cxs({
-        display: "inline-block",
-        left: 0,
-        top: 0,
-        whiteSpace: this.props.noWrap ? "nowrap" : "normal",
-    });
-
     componentDidMount() {
         // Starts animation
         const { interval } = this.props;
@@ -109,6 +93,22 @@ class TextLoop extends React.PureComponent {
         return this.wordBox.getBoundingClientRect();
     }
 
+    wrapperStyles = cxs({
+        ...(this.props.mask && { overflow: "hidden" }),
+        ...{
+            display: "inline-block",
+            position: "relative",
+            verticalAlign: "top",
+        },
+    });
+
+    elementStyles = cxs({
+        display: "inline-block",
+        left: 0,
+        top: 0,
+        whiteSpace: this.props.noWrap ? "nowrap" : "normal",
+    });
+
     getTransitionMotionStyles() {
         const { springConfig } = this.props;
         const { wordCount, element } = this.state;
@@ -160,9 +160,9 @@ class TextLoop extends React.PureComponent {
                                                 config.style.translate
                                             }px)`,
                                             position:
-                                                this.wordBox == null
-                                                    ? "relative"
-                                                    : "absolute",
+                                                this.wordBox == null ?
+                                                    "relative" :
+                                                    "absolute",
                                         }}
                                     >
                                         {config.data.element}
