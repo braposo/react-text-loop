@@ -128,7 +128,6 @@ class TextLoop extends React.PureComponent {
     }
 
     render() {
-        const hasLoaded = this.wordBox != null;
         return (
             <div className={`${this.wrapperStyles} ${this.props.className}`}>
                 <TransitionMotion
@@ -186,6 +185,7 @@ TextLoop.propTypes = {
     fade: PropTypes.bool.isRequired,
     mask: PropTypes.bool.isRequired,
     noWrap: PropTypes.bool.isRequired,
+    className: PropTypes.string,
 };
 
 TextLoop.defaultProps = {
