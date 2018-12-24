@@ -21,10 +21,10 @@ class App extends React.PureComponent {
                     </h2>
                 </div>
                 <div className={styles}>
-                    <h2 style={{ width: 500, textAlign: "center" }}>
+                    <h2 style={{ width: 500, textAlign: "left" }}>
                         Cool sentence,{" "}
-                        <TextLoop interval={3000}>
-                            <span speed={200}>one</span>
+                        <TextLoop interval={[3000, 1000, 3000]}>
+                            <span>one</span>
                             <span>two</span>
                             <span>three</span>
                         </TextLoop>

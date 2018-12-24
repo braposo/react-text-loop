@@ -9,39 +9,45 @@ class TextLoop extends React.PureComponent {
         const elements = React.Children.toArray(props.children);
 
         this.state = {
+            elements,
+            currentEl: elements[0],
             currentWordIndex: 0,
             wordCount: 0,
-            currentEl: elements[0],
-            elements,
+            currentInterval: Array.isArray(props.interval)
+                ? props.interval[0]
+                : props.interval,
         };
     }
 
     componentDidMount() {
         // Starts animation
-        const { interval, delay } = this.props;
-        if (interval > 0) {
+        const { delay } = this.props;
+        const { currentInterval } = this.state;
+
+        if (currentInterval > 0) {
             this.tickDelay = setTimeout(() => {
-                this.tickInterval = setInterval(this.tick, interval);
+                this.tickLoop = setTimeout(this.tick, currentInterval);
             }, delay);
         }
     }
 
     componentDidUpdate(prevProps) {
         const { interval, delay } = this.props;
+
         if (prevProps.interval !== interval) {
-            clearInterval(this.tickInterval);
+            clearTimeout(this.tickLoop);
             clearTimeout(this.tickDelay);
             if (interval > 0) {
                 this.tickDelay = setTimeout(() => {
-                    this.tickInterval = setInterval(this.tick, interval);
+                    this.tickLoop = setTimeout(this.tick, interval);
                 }, delay);
             }
         }
     }
 
     componentWillUnmount() {
-        if (this.tickInterval != null) {
-            clearInterval(this.tickInterval);
+        if (this.tickLoop != null) {
+            clearTimeout(this.tickLoop);
         }
 
         if (this.tickDelay != null) {
@@ -73,11 +79,14 @@ class TextLoop extends React.PureComponent {
         this.setState((state, props) => {
             const currentWordIndex =
                 (state.currentWordIndex + 1) % state.elements.length;
-
+            const currentEl = state.elements[currentWordIndex];
             const updatedState = {
                 currentWordIndex,
+                currentEl,
                 wordCount: (state.wordCount + 1) % 1000, // just a safe value to avoid infinite counts,
-                currentEl: state.elements[currentWordIndex],
+                currentInterval: Array.isArray(props.interval)
+                    ? props.interval[currentWordIndex % props.interval.length]
+                    : props.interval,
             };
             if (props.onChange) {
                 props.onChange(updatedState);
@@ -85,6 +94,8 @@ class TextLoop extends React.PureComponent {
 
             return updatedState;
         });
+
+        this.tickLoop = setTimeout(this.tick, this.state.currentInterval);
     };
 
     getOpacity() {
@@ -187,7 +198,8 @@ class TextLoop extends React.PureComponent {
 }
 
 TextLoop.propTypes = {
-    interval: PropTypes.number.isRequired,
+    interval: PropTypes.oneOfType([PropTypes.number, PropTypes.array])
+        .isRequired,
     delay: PropTypes.number.isRequired,
     adjustingSpeed: PropTypes.number.isRequired,
     springConfig: PropTypes.object.isRequired,
