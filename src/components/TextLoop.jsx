@@ -2,6 +2,8 @@ import React from "react";
 import { TransitionMotion, spring } from "react-motion";
 import cxs from "cxs";
 import PropTypes from "prop-types";
+import { requestTimeout, clearRequestTimeout } from "../utils";
+import isEqual from "react-fast-compare";
 
 class TextLoop extends React.PureComponent {
     constructor(props) {
@@ -19,14 +21,24 @@ class TextLoop extends React.PureComponent {
         };
     }
 
+    clearTimeouts() {
+        if (this.tickLoop != null) {
+            clearRequestTimeout(this.tickLoop);
+        }
+
+        if (this.tickDelay != null) {
+            clearRequestTimeout(this.tickDelay);
+        }
+    }
+
     componentDidMount() {
         // Starts animation
         const { delay } = this.props;
         const { currentInterval, elements } = this.state;
 
         if (currentInterval > 0 && elements.length > 1) {
-            this.tickDelay = setTimeout(() => {
-                this.tickLoop = setTimeout(this.tick, currentInterval);
+            this.tickDelay = requestTimeout(() => {
+                this.tickLoop = requestTimeout(this.tick, currentInterval);
             }, delay);
         }
     }
@@ -40,17 +52,16 @@ class TextLoop extends React.PureComponent {
             : interval;
 
         if (prevState.currentInterval !== currentInterval) {
-            clearTimeout(this.tickDelay);
-            clearTimeout(this.tickLoop);
+            this.clearTimeouts();
 
             if (currentInterval > 0 && React.Children.count(children) > 1) {
-                this.tickDelay = setTimeout(() => {
-                    this.tickLoop = setTimeout(this.tick, currentInterval);
+                this.tickDelay = requestTimeout(() => {
+                    this.tickLoop = requestTimeout(this.tick, currentInterval);
                 }, delay);
             }
         }
 
-        if (prevProps.children !== children) {
+        if (!isEqual(prevProps.children, children)) {
             this.setState({
                 elements: React.Children.toArray(children),
             });
@@ -58,13 +69,7 @@ class TextLoop extends React.PureComponent {
     }
 
     componentWillUnmount() {
-        if (this.tickLoop != null) {
-            clearTimeout(this.tickLoop);
-        }
-
-        if (this.tickDelay != null) {
-            clearTimeout(this.tickDelay);
-        }
+        this.clearTimeouts();
     }
 
     // Fade out animation
@@ -112,8 +117,8 @@ class TextLoop extends React.PureComponent {
             },
             () => {
                 if (this.state.currentInterval > 0) {
-                    clearTimeout(this.tickLoop);
-                    this.tickLoop = setTimeout(
+                    this.clearTimeouts();
+                    this.tickLoop = requestTimeout(
                         this.tick,
                         this.state.currentInterval
                     );
