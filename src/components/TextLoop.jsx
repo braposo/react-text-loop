@@ -15,20 +15,10 @@ class TextLoop extends React.PureComponent {
             currentEl: elements[0],
             currentWordIndex: 0,
             wordCount: 0,
-            currentInterval: Array.isArray(props.interval)
-                ? props.interval[0]
-                : props.interval,
+            currentInterval: Array.isArray(props.interval) ?
+                props.interval[0] :
+                props.interval,
         };
-    }
-
-    clearTimeouts() {
-        if (this.tickLoop != null) {
-            clearRequestTimeout(this.tickLoop);
-        }
-
-        if (this.tickDelay != null) {
-            clearRequestTimeout(this.tickDelay);
-        }
     }
 
     componentDidMount() {
@@ -47,9 +37,9 @@ class TextLoop extends React.PureComponent {
         const { interval, children, delay } = this.props;
         const { currentWordIndex } = this.state;
 
-        const currentInterval = Array.isArray(interval)
-            ? interval[currentWordIndex % interval.length]
-            : interval;
+        const currentInterval = Array.isArray(interval) ?
+            interval[currentWordIndex % interval.length] :
+            interval;
 
         if (prevState.currentInterval !== currentInterval) {
             this.clearTimeouts();
@@ -62,6 +52,7 @@ class TextLoop extends React.PureComponent {
         }
 
         if (!isEqual(prevProps.children, children)) {
+            // eslint-disable-next-line react/no-did-update-set-state
             this.setState({
                 elements: React.Children.toArray(children),
             });
@@ -70,6 +61,16 @@ class TextLoop extends React.PureComponent {
 
     componentWillUnmount() {
         this.clearTimeouts();
+    }
+
+    clearTimeouts() {
+        if (this.tickLoop != null) {
+            clearRequestTimeout(this.tickLoop);
+        }
+
+        if (this.tickDelay != null) {
+            clearRequestTimeout(this.tickDelay);
+        }
     }
 
     // Fade out animation
@@ -103,11 +104,11 @@ class TextLoop extends React.PureComponent {
                     currentWordIndex,
                     currentEl,
                     wordCount: (state.wordCount + 1) % 1000, // just a safe value to avoid infinite counts,
-                    currentInterval: Array.isArray(props.interval)
-                        ? props.interval[
-                              currentWordIndex % props.interval.length
-                          ]
-                        : props.interval,
+                    currentInterval: Array.isArray(props.interval) ?
+                        props.interval[
+                            currentWordIndex % props.interval.length
+                        ] :
+                        props.interval,
                 };
                 if (props.onChange) {
                     props.onChange(updatedState);
@@ -210,9 +211,9 @@ class TextLoop extends React.PureComponent {
                                                 config.style.translate
                                             }px)`,
                                             position:
-                                                this.wordBox == null
-                                                    ? "relative"
-                                                    : "absolute",
+                                                this.wordBox == null ?
+                                                    "relative" :
+                                                    "absolute",
                                         }}
                                     >
                                         {config.data.currentEl}
