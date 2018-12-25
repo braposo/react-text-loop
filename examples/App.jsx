@@ -20,6 +20,10 @@ const Section = cxs("div")({
         '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif',
 });
 
+const StyledTextLoop = cxs(TextLoop)({
+    display: "block",
+});
+
 class App extends React.PureComponent {
     constructor(props) {
         super(props);
@@ -85,9 +89,12 @@ class App extends React.PureComponent {
                     </Example>
                 </Section>
                 <Section>
-                    <Title>Woobly transition</Title>
+                    <Title>Smooth animation (different spring config)</Title>
                     <Example>
-                        <TextLoop springConfig={{ stiffness: 180, damping: 8 }}>
+                        <TextLoop
+                            springConfig={{ stiffness: 70, damping: 31 }}
+                            adjustingSpeed={500}
+                        >
                             <span>Trade faster</span>
                             <span>Increase sales</span>
                             <span>Stock winners</span>
@@ -118,57 +125,35 @@ class App extends React.PureComponent {
                     </Example>
                 </Section>
                 <Section>
-                    <Title>Controlled props</Title>
+                    <Title>
+                        Controlled props (start/stop animation and change
+                        options)
+                    </Title>
                     <Example>
                         <TextLoop interval={interval} children={options} /> in
                         every category.
                     </Example>
                 </Section>
                 <Section>
-                    <Title>Staggered (with delay prop)</Title>
+                    <Title>
+                        Staggered (with delay prop and custom styling)
+                    </Title>
                     <Example>
-                        <TextLoop
-                            mask={true}
-                            interval={2000}
-                            delay={0}
-                            children={["d", "p"]}
-                        />
-                        <TextLoop
-                            mask={true}
-                            interval={2000}
-                            delay={50}
-                            children={["i", "r"]}
-                        />
-                        <TextLoop
-                            mask={true}
-                            interval={2000}
-                            delay={100}
-                            children={["g", "o"]}
-                        />
-                        <TextLoop
-                            mask={true}
-                            interval={2000}
-                            delay={150}
-                            children={["i", "d"]}
-                        />
-                        <TextLoop
-                            mask={true}
-                            interval={2000}
-                            delay={200}
-                            children={["t", "u"]}
-                        />
-                        <TextLoop
-                            mask={true}
-                            interval={2000}
-                            delay={250}
-                            children={["a", "c"]}
-                        />
-                        <TextLoop
-                            mask={true}
-                            interval={2000}
-                            delay={300}
-                            children={["l", "t"]}
-                        />
+                        <StyledTextLoop mask={true} fade={false}>
+                            <span>Trade</span>
+                            <span>Increase</span>
+                            <span>Stock</span>
+                        </StyledTextLoop>
+                        <StyledTextLoop delay={500} mask={true} fade={false}>
+                            <span>faster</span>
+                            <span>sales</span>
+                            <span>winners</span>
+                        </StyledTextLoop>
+                        <StyledTextLoop delay={1000} mask={true} fade={false}>
+                            <span>in every category.</span>
+                            <span>in something else.</span>
+                            <span>in other category.</span>
+                        </StyledTextLoop>
                     </Example>
                 </Section>
             </div>

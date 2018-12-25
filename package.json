@@ -70,6 +70,7 @@
     "dependencies": {
         "cxs": "^6.2.0",
         "prop-types": "^15.6.2",
+        "react-fast-compare": "2.0.4",
         "react-motion": "^0.5.2"
     }
 }
