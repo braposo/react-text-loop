@@ -104,11 +104,11 @@ For many other examples, please have a look at the [CodeSandbox playground][code
 ## Contributing
 
 Please follow our
-[contributing guidelines](https://github.com/EDITD/react-text-loop/blob/master/CONTRIBUTING.md).
+[contributing guidelines](https://github.com/braposo/react-text-loop/blob/master/CONTRIBUTING.md).
 
 ## License
 
-[MIT](https://github.com/EDITD/react-text-loop/blob/master/LICENSE)
+[MIT](https://github.com/braposo/react-text-loop/blob/master/LICENSE)
 
 [npm]: https://www.npmjs.com/package/react-text-loop
 [license]: https://github.com/braposo/react-text-loop/blob/master/LICENSE
