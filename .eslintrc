@@ -1,13 +1,21 @@
 {
     "extends": "edited",
+    "parserOptions": {
+        "ecmaVersion": 6,
+        "sourceType": "module",
+        "ecmaFeatures": {
+            "jsx": true
+        }
+    },
     "settings": {
         "import/resolver": {
             "node": {
-                "extensions": [ ".js", ".jsx" ],
+                "extensions": [".js", ".jsx"]
             }
         }
     },
     "rules": {
         "react/prefer-es6-class": [2, "always"],
+        "arrow-parens": [2, "as-needed"]
     }
 }
