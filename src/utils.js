@@ -1,14 +1,16 @@
 const requestAnimFrame = (function() {
-    return (
-        window.requestAnimationFrame ||
-        window.webkitRequestAnimationFrame ||
-        window.mozRequestAnimationFrame ||
-        window.oRequestAnimationFrame ||
-        window.msRequestAnimationFrame ||
-        function(/* function */ callback) {
-            window.setTimeout(callback, 1000 / 60);
-        }
-    );
+    if (typeof window !== "undefined") {
+        return (
+            window.requestAnimationFrame ||
+            window.webkitRequestAnimationFrame ||
+            window.mozRequestAnimationFrame ||
+            window.oRequestAnimationFrame ||
+            window.msRequestAnimationFrame ||
+            function(/* function */ callback) {
+                window.setTimeout(callback, 1000 / 60);
+            }
+        );
+    }
 })();
 
 /*
@@ -55,19 +57,19 @@ export const requestTimeout = function(fn, delay) {
  * @param {int|object} fn The callback function
  */
 export const clearRequestTimeout = function(handle) {
-    return window.cancelAnimationFrame ?
-        window.cancelAnimationFrame(handle.value) :
-        window.webkitCancelAnimationFrame ?
-            window.webkitCancelAnimationFrame(handle.value) :
-            window.webkitCancelRequestAnimationFrame ?
-                window.webkitCancelRequestAnimationFrame(
-                    handle.value
-                ) : /* Support for legacy API */
-                window.mozCancelRequestAnimationFrame ?
-                    window.mozCancelRequestAnimationFrame(handle.value) :
-                    window.oCancelRequestAnimationFrame ?
-                        window.oCancelRequestAnimationFrame(handle.value) :
-                        window.msCancelRequestAnimationFrame ?
-                            window.msCancelRequestAnimationFrame(handle.value) :
-                            clearTimeout(handle);
+    return window.cancelAnimationFrame
+        ? window.cancelAnimationFrame(handle.value)
+        : window.webkitCancelAnimationFrame
+        ? window.webkitCancelAnimationFrame(handle.value)
+        : window.webkitCancelRequestAnimationFrame
+        ? window.webkitCancelRequestAnimationFrame(
+              handle.value
+          ) /* Support for legacy API */
+        : window.mozCancelRequestAnimationFrame
+        ? window.mozCancelRequestAnimationFrame(handle.value)
+        : window.oCancelRequestAnimationFrame
+        ? window.oCancelRequestAnimationFrame(handle.value)
+        : window.msCancelRequestAnimationFrame
+        ? window.msCancelRequestAnimationFrame(handle.value)
+        : clearTimeout(handle);
 };
