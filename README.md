@@ -33,8 +33,8 @@ class App extends Component {
             <h2>
                 <TextLoop>
                     <span>First item</span>
-                    <Link to="/">Second item</Link>
-                    <BodyText>Third item</BodyText>
+                    <a href="/">Second item</a>
+                    <p>Third item</p>
                 </TextLoop>{" "}
                 and something else.
             </h2>
