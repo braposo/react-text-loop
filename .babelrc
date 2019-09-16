@@ -7,17 +7,8 @@
                 "modules": false
             }
         ],
-        "@babel/react"
+        "@babel/react",
+        "@babel/typescript"
     ],
-    "plugins": [
-        "@babel/plugin-proposal-object-rest-spread",
-        "@babel/plugin-proposal-class-properties"
-    ],
-    "env": {
-        "commonjs": {
-            "plugins": [
-                "@babel/plugin-transform-modules-commonjs"
-            ]
-        }
-    }
+    "plugins": ["@babel/plugin-proposal-class-properties"]
 }

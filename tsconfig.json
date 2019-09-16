@@ -1,0 +1,34 @@
+{
+    "compilerOptions": {
+        "allowJs": false,
+        "allowSyntheticDefaultImports": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+
+        "lib": ["es2015", "dom"],
+        "target": "es5",
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "jsx": "react",
+        "emitDeclarationOnly": true,
+        "preserveConstEnums": true,
+        "removeComments": true,
+        "sourceMap": true,
+        "pretty": true,
+        "declaration": true,
+        "outDir": "./lib",
+
+        "strict": true,
+        "noImplicitAny": false,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "strictPropertyInitialization": true,
+        "strictNullChecks": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": false,
+
+        "baseUrl": "src"
+    },
+    "include": ["src"],
+    "exclude": ["node_modules"]
+}
