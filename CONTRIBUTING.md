@@ -15,28 +15,27 @@ Fork, then clone the repo:
 git clone https://github.com/your-username/react-text-loop.git
 ```
 
-Build package for dev mode. It will automatically watch any changes in `src/` forlder:
-```
-yarn run dev
-```
+Run the examples, which will automatically watch any changes in `src/` folder:
 
-We follow [eslint-config-edited](https://www.npmjs.com/package/eslint-config-edited) for code style.
+```
+yarn start
+```
 
 ### Building and testing
 
 Build package:
 ```
-yarn run build
+yarn build
 ```
 
 To run the tests:
 ```
-npm run test
+yarn test
 ```
 
 To perform linting with `eslint`, run the following:
 ```
-npm run lint
+yarn lint
 ```
 
 ### New Features
