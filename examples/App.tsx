@@ -24,7 +24,7 @@ const StyledTextLoop = cxs(TextLoop)({
     display: "block",
 });
 
-class App extends React.PureComponent {
+class App extends React.PureComponent<{}, { options: string[]; interval: number }> {
     constructor(props) {
         super(props);
         this.state = {

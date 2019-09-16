@@ -1,12 +1,56 @@
 import React from "react";
-import { TransitionMotion, spring } from "react-motion";
+import {
+    TransitionMotion,
+    spring,
+    OpaqueConfig,
+    TransitionStyle,
+} from "react-motion";
 import cxs from "cxs";
-import PropTypes from "prop-types";
-import { requestTimeout, clearRequestTimeout } from "../utils";
 import isEqual from "react-fast-compare";
+import { requestTimeout, clearRequestTimeout, RequestTimeout } from "../utils";
 
-class TextLoop extends React.PureComponent {
-    constructor(props) {
+type Props = {
+    children?: (JSX.Element | string)[];
+    interval: number | number[];
+    delay: number;
+    adjustingSpeed: number;
+    springConfig: {
+        stiffness: number;
+        damping: number;
+    };
+    fade: boolean;
+    mask: boolean;
+    noWrap: boolean;
+    className?: string;
+    onChange?: Function;
+};
+
+type State = {
+    elements: (JSX.Element | string | undefined)[];
+    currentEl: JSX.Element | string | undefined;
+    currentWordIndex: number;
+    wordCount: number;
+    currentInterval: number;
+};
+
+class TextLoop extends React.PureComponent<Props, State> {
+    tickDelay: RequestTimeout = 0;
+
+    tickLoop: RequestTimeout = 0;
+
+    wordBox: HTMLDivElement | null = null;
+
+    static defaultProps: Props = {
+        interval: 3000,
+        delay: 0,
+        adjustingSpeed: 150,
+        springConfig: { stiffness: 340, damping: 30 },
+        fade: true,
+        mask: false,
+        noWrap: true,
+    };
+
+    constructor(props: Props) {
         super(props);
         const elements = React.Children.toArray(props.children);
 
@@ -15,13 +59,13 @@ class TextLoop extends React.PureComponent {
             currentEl: elements[0],
             currentWordIndex: 0,
             wordCount: 0,
-            currentInterval: Array.isArray(props.interval) ?
-                props.interval[0] :
-                props.interval,
+            currentInterval: Array.isArray(props.interval)
+                ? props.interval[0]
+                : props.interval,
         };
     }
 
-    componentDidMount() {
+    componentDidMount(): void {
         // Starts animation
         const { delay } = this.props;
         const { currentInterval, elements } = this.state;
@@ -33,13 +77,13 @@ class TextLoop extends React.PureComponent {
         }
     }
 
-    componentDidUpdate(prevProps, prevState) {
-        const { interval, children, delay } = this.props;
+    componentDidUpdate(prevProps: Props, prevState: State): void {
+        const { interval, children, delay } = this.props as Props;
         const { currentWordIndex } = this.state;
 
-        const currentInterval = Array.isArray(interval) ?
-            interval[currentWordIndex % interval.length] :
-            interval;
+        const currentInterval = Array.isArray(interval)
+            ? interval[currentWordIndex % interval.length]
+            : interval;
 
         if (prevState.currentInterval !== currentInterval) {
             this.clearTimeouts();
@@ -59,11 +103,11 @@ class TextLoop extends React.PureComponent {
         }
     }
 
-    componentWillUnmount() {
+    componentWillUnmount(): void {
         this.clearTimeouts();
     }
 
-    clearTimeouts() {
+    clearTimeouts(): void {
         if (this.tickLoop != null) {
             clearRequestTimeout(this.tickLoop);
         }
@@ -74,7 +118,7 @@ class TextLoop extends React.PureComponent {
     }
 
     // Fade out animation
-    willLeave = () => {
+    willLeave = (): { opacity: OpaqueConfig; translate: OpaqueConfig } => {
         const { height } = this.getDimensions();
 
         return {
@@ -84,7 +128,7 @@ class TextLoop extends React.PureComponent {
     };
 
     // Fade in animation
-    willEnter = () => {
+    willEnter = (): { opacity: 0 | 1; translate: number } => {
         const { height } = this.getDimensions();
 
         return {
@@ -93,7 +137,7 @@ class TextLoop extends React.PureComponent {
         };
     };
 
-    tick = () => {
+    tick = (): void => {
         this.setState(
             (state, props) => {
                 const currentWordIndex =
@@ -104,11 +148,11 @@ class TextLoop extends React.PureComponent {
                     currentWordIndex,
                     currentEl,
                     wordCount: (state.wordCount + 1) % 1000, // just a safe value to avoid infinite counts,
-                    currentInterval: Array.isArray(props.interval) ?
-                        props.interval[
-                            currentWordIndex % props.interval.length
-                        ] :
-                        props.interval,
+                    currentInterval: Array.isArray(props.interval)
+                        ? props.interval[
+                              currentWordIndex % props.interval.length
+                          ]
+                        : props.interval,
                 };
                 if (props.onChange) {
                     props.onChange(updatedState);
@@ -128,15 +172,15 @@ class TextLoop extends React.PureComponent {
         );
     };
 
-    getOpacity() {
+    getOpacity(): 0 | 1 {
         return this.props.fade ? 0 : 1;
     }
 
-    getDimensions() {
+    getDimensions(): ClientRect | DOMRect | { width: 0; height: 0 } {
         if (this.wordBox == null) {
             return {
-                width: "auto",
-                height: "auto",
+                width: 0,
+                height: 0,
             };
         }
 
@@ -159,7 +203,7 @@ class TextLoop extends React.PureComponent {
         whiteSpace: this.props.noWrap ? "nowrap" : "normal",
     });
 
-    getTransitionMotionStyles() {
+    getTransitionMotionStyles(): TransitionStyle[] {
         const { springConfig } = this.props;
         const { wordCount, currentEl } = this.state;
 
@@ -177,7 +221,7 @@ class TextLoop extends React.PureComponent {
         ];
     }
 
-    render() {
+    render(): JSX.Element {
         const { className = "" } = this.props;
         return (
             <div className={`${this.wrapperStyles} ${className}`}>
@@ -186,34 +230,37 @@ class TextLoop extends React.PureComponent {
                     willEnter={this.willEnter}
                     styles={this.getTransitionMotionStyles()}
                 >
-                    {interpolatedStyles => {
+                    {(interpolatedStyles): JSX.Element => {
                         const { height, width } = this.getDimensions();
+
+                        const parsedWidth =
+                            this.wordBox == null ? "auto" : width;
+
+                        const parsedHeight =
+                            this.wordBox == null ? "auto" : height;
+
                         return (
                             <div
                                 style={{
-                                    transition: `width ${
-                                        this.props.adjustingSpeed
-                                    }ms linear`,
-                                    height,
-                                    width,
+                                    transition: `width ${this.props.adjustingSpeed}ms linear`,
+                                    height: parsedHeight,
+                                    width: parsedWidth,
                                 }}
                             >
                                 {interpolatedStyles.map(config => (
                                     <div
                                         className={this.elementStyles}
-                                        ref={n => {
+                                        ref={(n: HTMLDivElement): void => {
                                             this.wordBox = n;
                                         }}
                                         key={config.key}
                                         style={{
                                             opacity: config.style.opacity,
-                                            transform: `translateY(${
-                                                config.style.translate
-                                            }px)`,
+                                            transform: `translateY(${config.style.translate}px)`,
                                             position:
-                                                this.wordBox == null ?
-                                                    "relative" :
-                                                    "absolute",
+                                                this.wordBox == null
+                                                    ? "relative"
+                                                    : "absolute",
                                         }}
                                     >
                                         {config.data.currentEl}
@@ -227,28 +274,5 @@ class TextLoop extends React.PureComponent {
         );
     }
 }
-
-TextLoop.propTypes = {
-    interval: PropTypes.oneOfType([PropTypes.number, PropTypes.array])
-        .isRequired,
-    delay: PropTypes.number.isRequired,
-    adjustingSpeed: PropTypes.number.isRequired,
-    springConfig: PropTypes.object.isRequired,
-    children: PropTypes.node.isRequired,
-    fade: PropTypes.bool.isRequired,
-    mask: PropTypes.bool.isRequired,
-    noWrap: PropTypes.bool.isRequired,
-    className: PropTypes.string,
-};
-
-TextLoop.defaultProps = {
-    interval: 3000,
-    delay: 0,
-    adjustingSpeed: 150,
-    springConfig: { stiffness: 340, damping: 30 },
-    fade: true,
-    mask: false,
-    noWrap: true,
-};
 
 export default TextLoop;

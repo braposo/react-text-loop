@@ -24,3 +24,5 @@ node_modules
 dist/
 es/
 lib/
+examples/cache/
+examples/dist/

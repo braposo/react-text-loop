@@ -19,6 +19,7 @@ const reactDomExternal = {
 
 const config = {
     mode: process.env.NODE_ENV || "development",
+    devtool: "cheap-source-map",
     externals: {
         react: reactExternal,
         "react-dom": reactDomExternal,
@@ -26,15 +27,20 @@ const config = {
     module: {
         rules: [
             {
-                test: /\.jsx?$/,
+                test: /\.tsx?$/,
                 use: ["babel-loader"],
                 exclude: /node_modules/,
+            },
+            {
+                test: /\.js$/,
+                use: ["source-map-loader"],
+                enforce: "pre",
             },
         ],
     },
     resolve: {
         modules: [path.join(__dirname, "./src/"), "node_modules"],
-        extensions: [".js", ".jsx"],
+        extensions: [".js", ".tsx", ".ts"],
     },
     output: {
         library: "ReactTextLoop",

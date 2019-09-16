@@ -1,21 +1,34 @@
 {
-    "extends": "edited",
+    "extends": [
+        "airbnb-base",
+        "eslint:recommended",
+        "plugin:react/recommended",
+        "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:@typescript-eslint/recommended-requiring-type-checking",
+        "plugin:prettier/recommended",
+        "prettier/react",
+        "prettier/@typescript-eslint"
+    ],
+    "parser": "@typescript-eslint/parser",
     "parserOptions": {
-        "ecmaVersion": 6,
-        "sourceType": "module",
-        "ecmaFeatures": {
-            "jsx": true
-        }
+        "project": "./tsconfig.json"
+    },
+    "plugins": ["@typescript-eslint", "react", "prettier"],
+    "rules": {
+        "class-methods-use-this": "off",
+        "dot-notation": "off",
+        "func-names": ["error", "as-needed"],
+        "no-nested-ternary": "off"
     },
     "settings": {
+        "react": {
+            "version": "detect"
+        },
         "import/resolver": {
             "node": {
-                "extensions": [".js", ".jsx"]
+                "extensions": [".js", ".tsx", ".ts"]
             }
         }
-    },
-    "rules": {
-        "react/prefer-es6-class": [2, "always"],
-        "arrow-parens": [2, "as-needed"]
     }
 }

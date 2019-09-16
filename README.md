@@ -22,10 +22,14 @@ animations and spring params.
 
 [![Edit react-text-loop][codesandbox-badge]][codesandbox]
 
-### Code
+You can also run the examples by cloning the repo and running `yarn start`.
+
+### Usage
 
 ```jsx
 import TextLoop from "react-text-loop";
+import Link from "react-router";
+import { BodyText } from "./ui";
 
 class App extends Component {
     render() {
@@ -121,4 +125,4 @@ Please follow our
 [modules-badge]: https://img.shields.io/badge/module%20formats-umd%2C%20cjs%2C%20esm-green.svg?style=flat-square
 [prs-badge]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square
 [codesandbox-badge]: https://codesandbox.io/static/img/play-codesandbox.svg
-[codesandbox]: https://codesandbox.io/s/github/braposo/react-text-loop/
+[codesandbox]: https://codesandbox.io/s/react-text-loop-playground-br4q1
