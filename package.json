@@ -4,6 +4,7 @@
     "description": "Create an animated loop of a list of text for your headings",
     "main": "./lib/index.js",
     "module": "es/index.js",
+    "sideEffects": false,
     "scripts": {
         "build": "run-p build:commonjs build:es build:umd build:umd:min build:ts build:ts-es",
         "build:es": "babel src -d es --extensions .ts,.tsx",
