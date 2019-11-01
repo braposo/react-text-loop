@@ -17,7 +17,7 @@
         "dev": "yarn run clean && cross-env BABEL_ENV=commonjs babel src -d lib --watch",
         "start": "parcel examples/index.html -d examples/dist --cache-dir examples/cache --open",
         "lint": "eslint src/ --ext .js,.tsx,.ts",
-        "prepublishOnly": "yarn run clean && yarn run build",
+        "prepublishOnly": "yarn run test && yarn run clean && yarn run build",
         "test": "jest",
         "test:coverage": "jest --coverage",
         "ts:check": "tsc -p tsconfig.json --allowJs false --noEmit --emitDeclarationOnly false"
@@ -43,9 +43,9 @@
         "motion"
     ],
     "author": {
-        "name": "EDITED",
-        "email": "hello@edited.com",
-        "url": "http://edited.tech"
+        "name": "Bernardo Raposo",
+        "email": "hi@bernardoraposo.com",
+        "url": "http://bernardoraposo.com"
     },
     "license": "MIT",
     "bugs": {
