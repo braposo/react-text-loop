@@ -12,14 +12,18 @@
     ],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
-        "project": "./tsconfig.json"
+        "project": ["./tsconfig.json", "./tsconfig.eslint.json"]
     },
     "plugins": ["@typescript-eslint", "react", "prettier"],
     "rules": {
         "class-methods-use-this": "off",
         "dot-notation": "off",
         "func-names": ["error", "as-needed"],
-        "no-nested-ternary": "off"
+        "no-nested-ternary": "off",
+        "import/no-extraneous-dependencies": [
+            "error",
+            { "devDependencies": true }
+        ]
     },
     "settings": {
         "react": {
