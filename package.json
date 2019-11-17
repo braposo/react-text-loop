@@ -1,6 +1,6 @@
 {
     "name": "react-text-loop",
-    "version": "2.2.0",
+    "version": "2.2.1",
     "description": "Create an animated loop of a list of text for your headings",
     "main": "./lib/index.js",
     "module": "es/index.js",
