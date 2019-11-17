@@ -34,6 +34,8 @@ type State = {
 };
 
 class TextLoop extends React.PureComponent<Props, State> {
+    isUnMounting = false;
+
     tickDelay: RequestTimeout = 0;
 
     tickLoop: RequestTimeout = 0;
@@ -104,6 +106,7 @@ class TextLoop extends React.PureComponent<Props, State> {
     }
 
     componentWillUnmount(): void {
+        this.isUnMounting = true;
         this.clearTimeouts();
     }
 
@@ -138,38 +141,40 @@ class TextLoop extends React.PureComponent<Props, State> {
     };
 
     tick = (): void => {
-        this.setState(
-            (state, props) => {
-                const currentWordIndex =
-                    (state.currentWordIndex + 1) % state.elements.length;
+        if (!this.isUnMounting) {
+            this.setState(
+                (state, props) => {
+                    const currentWordIndex =
+                        (state.currentWordIndex + 1) % state.elements.length;
 
-                const currentEl = state.elements[currentWordIndex];
-                const updatedState = {
-                    currentWordIndex,
-                    currentEl,
-                    wordCount: (state.wordCount + 1) % 1000, // just a safe value to avoid infinite counts,
-                    currentInterval: Array.isArray(props.interval)
-                        ? props.interval[
-                              currentWordIndex % props.interval.length
-                          ]
-                        : props.interval,
-                };
-                if (props.onChange) {
-                    props.onChange(updatedState);
-                }
+                    const currentEl = state.elements[currentWordIndex];
+                    const updatedState = {
+                        currentWordIndex,
+                        currentEl,
+                        wordCount: (state.wordCount + 1) % 1000, // just a safe value to avoid infinite counts,
+                        currentInterval: Array.isArray(props.interval)
+                            ? props.interval[
+                                  currentWordIndex % props.interval.length
+                              ]
+                            : props.interval,
+                    };
+                    if (props.onChange) {
+                        props.onChange(updatedState);
+                    }
 
-                return updatedState;
-            },
-            () => {
-                if (this.state.currentInterval > 0) {
-                    this.clearTimeouts();
-                    this.tickLoop = requestTimeout(
-                        this.tick,
-                        this.state.currentInterval
-                    );
+                    return updatedState;
+                },
+                () => {
+                    if (this.state.currentInterval > 0) {
+                        this.clearTimeouts();
+                        this.tickLoop = requestTimeout(
+                            this.tick,
+                            this.state.currentInterval
+                        );
+                    }
                 }
-            }
-        );
+            );
+        }
     };
 
     getOpacity(): 0 | 1 {
