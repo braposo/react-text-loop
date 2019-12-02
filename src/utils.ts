@@ -76,18 +76,18 @@ export const requestTimeout = function(
  */
 export const clearRequestTimeout = function(handle): void {
     return window.cancelAnimationFrame
-        ? window.cancelAnimationFrame(handle.value)
+        ? window.cancelAnimationFrame(handle)
         : window.webkitCancelAnimationFrame
-        ? window.webkitCancelAnimationFrame(handle.value)
+        ? window.webkitCancelAnimationFrame(handle)
         : window.webkitCancelRequestAnimationFrame
         ? window.webkitCancelRequestAnimationFrame(
-              handle.value
+              handle
           ) /* Support for legacy API */
         : window.mozCancelRequestAnimationFrame
-        ? window.mozCancelRequestAnimationFrame(handle.value)
+        ? window.mozCancelRequestAnimationFrame(handle)
         : window.oCancelRequestAnimationFrame
-        ? window.oCancelRequestAnimationFrame(handle.value)
+        ? window.oCancelRequestAnimationFrame(handle)
         : window.msCancelRequestAnimationFrame
-        ? window.msCancelRequestAnimationFrame(handle.value)
+        ? window.msCancelRequestAnimationFrame(handle)
         : clearTimeout(handle);
 };
