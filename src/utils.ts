@@ -52,7 +52,7 @@ export const requestTimeout = function(
 
     const start = new Date().getTime();
 
-    let value: number | void = 0;
+    const handle: object = new Object();
 
     function loop(): number | void {
         const current = new Date().getTime();
@@ -62,12 +62,12 @@ export const requestTimeout = function(
         if (delta >= delay) {
             fn.call(null);
         } else {
-            value = requestAnimFrame(loop);
+            handle.value = requestAnimFrame(loop);
         }
     }
 
-    value = requestAnimFrame(loop);
-    return value;
+    handle.value = requestAnimFrame(loop);
+    return handle;
 };
 
 /**
