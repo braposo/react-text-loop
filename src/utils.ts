@@ -1,12 +1,12 @@
 declare global {
     interface Window {
-        mozRequestAnimationFrame: any;
-        oRequestAnimationFrame: any;
-        msRequestAnimationFrame: any;
-        mozCancelRequestAnimationFrame: any;
-        webkitCancelRequestAnimationFrame: any;
-        oCancelRequestAnimationFrame: any;
-        msCancelRequestAnimationFrame: any;
+        mozRequestAnimationFrame;
+        oRequestAnimationFrame;
+        msRequestAnimationFrame;
+        mozCancelRequestAnimationFrame;
+        webkitCancelRequestAnimationFrame;
+        oCancelRequestAnimationFrame;
+        msCancelRequestAnimationFrame;
     }
 }
 
@@ -28,7 +28,9 @@ const requestAnimFrame = ((): Function => {
         );
     }
 
-    return (): void => {};
+    return (): void => {
+        /* return empty function */
+    };
 })();
 
 export type RequestTimeout = object | number | void;
