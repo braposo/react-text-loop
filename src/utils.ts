@@ -10,6 +10,10 @@ declare global {
     }
 }
 
+declare interface Handle {
+    value: number | void;
+}
+
 const requestAnimFrame = ((): Function => {
     if (typeof window !== "undefined") {
         return (
@@ -27,7 +31,7 @@ const requestAnimFrame = ((): Function => {
     return (): void => {};
 })();
 
-export type RequestTimeout = number | void;
+export type RequestTimeout = object | number | void;
 /*
  * Behaves the same as setTimeout except uses requestAnimationFrame() where possible for better performance
  * @param {function} fn The callback function
@@ -52,7 +56,7 @@ export const requestTimeout = function(
 
     const start = new Date().getTime();
 
-    const handle: object = new Object();
+    const handle: Handle = { value: 0 };
 
     function loop(): number | void {
         const current = new Date().getTime();
