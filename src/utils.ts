@@ -1,13 +1,17 @@
 declare global {
     interface Window {
-        mozRequestAnimationFrame: any;
-        oRequestAnimationFrame: any;
-        msRequestAnimationFrame: any;
-        mozCancelRequestAnimationFrame: any;
-        webkitCancelRequestAnimationFrame: any;
-        oCancelRequestAnimationFrame: any;
-        msCancelRequestAnimationFrame: any;
+        mozRequestAnimationFrame;
+        oRequestAnimationFrame;
+        msRequestAnimationFrame;
+        mozCancelRequestAnimationFrame;
+        webkitCancelRequestAnimationFrame;
+        oCancelRequestAnimationFrame;
+        msCancelRequestAnimationFrame;
     }
+}
+
+declare interface Handle {
+    value: number | void;
 }
 
 const requestAnimFrame = ((): Function => {
@@ -24,10 +28,12 @@ const requestAnimFrame = ((): Function => {
         );
     }
 
-    return (): void => {};
+    return (): void => {
+        /* return empty function */
+    };
 })();
 
-export type RequestTimeout = number | void;
+export type RequestTimeout = object | number | void;
 /*
  * Behaves the same as setTimeout except uses requestAnimationFrame() where possible for better performance
  * @param {function} fn The callback function
@@ -52,7 +58,7 @@ export const requestTimeout = function(
 
     const start = new Date().getTime();
 
-    let value: number | void = 0;
+    const handle: Handle = { value: 0 };
 
     function loop(): number | void {
         const current = new Date().getTime();
@@ -62,12 +68,12 @@ export const requestTimeout = function(
         if (delta >= delay) {
             fn.call(null);
         } else {
-            value = requestAnimFrame(loop);
+            handle.value = requestAnimFrame(loop);
         }
     }
 
-    value = requestAnimFrame(loop);
-    return value;
+    handle.value = requestAnimFrame(loop);
+    return handle;
 };
 
 /**

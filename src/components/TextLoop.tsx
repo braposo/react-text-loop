@@ -94,6 +94,18 @@ class TextLoop extends React.PureComponent<Props, State> {
                 this.tickDelay = requestTimeout(() => {
                     this.tickLoop = requestTimeout(this.tick, currentInterval);
                 }, delay);
+            } else {
+                this.setState((state, props) => {
+                    const { currentWordIndex: _currentWordIndex } = state;
+
+                    return {
+                        currentInterval: Array.isArray(props.interval)
+                            ? props.interval[
+                                  _currentWordIndex % props.interval.length
+                              ]
+                            : props.interval,
+                    };
+                });
             }
         }
 
