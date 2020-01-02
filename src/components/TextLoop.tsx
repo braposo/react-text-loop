@@ -111,8 +111,12 @@ class TextLoop extends React.PureComponent<Props, State> {
 
         if (!isEqual(prevProps.children, children)) {
             // eslint-disable-next-line react/no-did-update-set-state
-            this.setState({
-                elements: React.Children.toArray(children),
+            this.setState((state, props) => {
+                const newElements = React.Children.toArray(children);
+                return {
+                    elements: newElements,
+                    currentEl: newElements[states.currentWordIndex],
+                }
             });
         }
     }
