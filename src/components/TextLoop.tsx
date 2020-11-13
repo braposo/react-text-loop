@@ -138,7 +138,7 @@ class TextLoop extends React.PureComponent<Props, State> {
 
         return {
             opacity: spring(this.getOpacity(), this.props.springConfig),
-            translate: spring(-height, this.props.springConfig),
+            translate: spring(height, this.props.springConfig),
         };
     };
 
@@ -148,7 +148,7 @@ class TextLoop extends React.PureComponent<Props, State> {
 
         return {
             opacity: this.getOpacity(),
-            translate: height,
+            translate: -height,
         };
     };
 
