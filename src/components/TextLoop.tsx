@@ -23,6 +23,7 @@ type Props = {
     noWrap: boolean;
     className?: string;
     onChange?: Function;
+    direction: "up" | "down";
 };
 
 type State = {
@@ -50,6 +51,7 @@ class TextLoop extends React.PureComponent<Props, State> {
         fade: true,
         mask: false,
         noWrap: true,
+        direction: "up",
     };
 
     constructor(props: Props) {
@@ -136,9 +138,10 @@ class TextLoop extends React.PureComponent<Props, State> {
     willLeave = (): { opacity: OpaqueConfig; translate: OpaqueConfig } => {
         const { height } = this.getDimensions();
 
+        const dirAdjust = this.props.direction === "up" ? -1 : 1;
         return {
             opacity: spring(this.getOpacity(), this.props.springConfig),
-            translate: spring(height, this.props.springConfig),
+            translate: spring(height * dirAdjust, this.props.springConfig),
         };
     };
 
@@ -146,9 +149,10 @@ class TextLoop extends React.PureComponent<Props, State> {
     willEnter = (): { opacity: 0 | 1; translate: number } => {
         const { height } = this.getDimensions();
 
+        const dirAdjust = this.props.direction === "up" ? 1 : -1;
         return {
             opacity: this.getOpacity(),
-            translate: -height,
+            translate: height * dirAdjust,
         };
     };
 

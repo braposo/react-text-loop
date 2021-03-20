@@ -40,6 +40,25 @@ const BaseExample: React.FunctionComponent = (): JSX.Element => (
     </Section>
 );
 
+const DirectionExample: React.FunctionComponent = (): JSX.Element => (
+    <Section>
+        <Title>Default</Title>
+        <Example>
+            <TextLoop direction="down">
+                <span>Trade faster</span>
+                <span>Increase sales</span>
+                <span>Stock winners</span>
+            </TextLoop>{" "}
+            and{" "}
+            <TextLoop direction="up">
+                <span>be awesome</span>
+                <span>win big</span>
+                <span>live the dream</span>
+            </TextLoop>
+        </Example>
+    </Section>
+);
+
 const FastExample: React.FunctionComponent = (): JSX.Element => (
     <Section>
         <Title>Fast transition</Title>
@@ -178,6 +197,7 @@ const StaggeredExample: React.FunctionComponent = (): JSX.Element => (
 
 enum Sections {
     Base,
+    Direction,
     Fast,
     Smooth,
     Variable,
@@ -191,6 +211,7 @@ const App: React.FunctionComponent = (): JSX.Element => {
 
     const mapSectionToComponent = {
         [Sections.Base]: BaseExample,
+        [Sections.Direction]: DirectionExample,
         [Sections.Fast]: FastExample,
         [Sections.Smooth]: SmoothExample,
         [Sections.Variable]: VariableExample,
@@ -210,6 +231,7 @@ const App: React.FunctionComponent = (): JSX.Element => {
                     }}
                 >
                     <option value={Sections.Base}>Default</option>
+                    <option value={Sections.Direction}>Direction</option>
                     <option value={Sections.Fast}>Fast</option>
                     <option value={Sections.Smooth}>Smooth</option>
                     <option value={Sections.Variable}>Variable</option>
