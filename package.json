@@ -99,6 +99,6 @@
     "dependencies": {
         "cxs": "^6.2.0",
         "react-fast-compare": "2.0.4",
-        "react-motion": "^0.5.2"
+        "react-spring": "^9.5.2"
     }
 }
