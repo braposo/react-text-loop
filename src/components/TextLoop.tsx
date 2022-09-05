@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useMemo } from 'react'
 import { animated, useTransition } from 'react-spring'
 import cxs from 'cxs'
 import { useRequestTimeout } from '../utils'
@@ -31,7 +31,7 @@ function TextLoop({
   className = '',
   onChange,
 }: Props) {
-  const elements = React.Children.toArray(children) // TODO: useMemo this?
+  const elements = useMemo(() => React.Children.toArray(children), [children])
 
   const [state, setState] = useState({
     currentEl: elements[0],
