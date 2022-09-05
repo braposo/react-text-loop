@@ -41,7 +41,7 @@ function TextLoop({
   })
   const wordBoxRef = useRef<HTMLDivElement | null>(null)
   // We set this state each time we get a new wordBoxRef in order to re-render immediately
-  const [_, setWordBoxRefKey] = useState<string | null>(null)
+  const [, setWordBoxRefKey] = useState<string | null>(null)
 
   const currentInterval = Array.isArray(interval)
     ? interval[state.currentWordIndex % interval.length]
@@ -85,7 +85,7 @@ function TextLoop({
 
   // TODO: componentDidUpdate includes some code for currentInterval == 0 I think
   function tick() {
-    const newWordIndex = (state.currentWordIndex + 1) % (children?.length ?? 0)
+    const newWordIndex = (state.currentWordIndex + 1) % elements.length
     const nextEl = elements[newWordIndex]
 
     const newState = {
