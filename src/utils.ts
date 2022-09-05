@@ -1,3 +1,5 @@
+import { useEffect, useRef } from "react";
+
 declare global {
     interface Window {
         mozRequestAnimationFrame;
@@ -97,3 +99,21 @@ export const clearRequestTimeout = function(handle): void {
         ? window.msCancelRequestAnimationFrame(handle.value)
         : clearTimeout(handle);
 };
+
+export function useRequestTimeout(callback: () => void, delay: number | null, identifier: any) {
+  const savedCallback = useRef(callback)
+  useEffect(() => {
+    savedCallback.current = callback
+  }, [callback])
+
+  useEffect(() => {
+    if (!delay && delay !== 0) {
+      return
+    }
+
+    const handle = requestTimeout(() => savedCallback.current(), delay)
+
+    return () => clearRequestTimeout(handle)
+  }, [delay, identifier])
+}
+
